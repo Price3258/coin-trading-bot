@@ -1,3 +1,5 @@
+import { BASE_URL } from "@/constants/url";
+
 type Account = {
   currency: string;
   balance: string;
@@ -5,7 +7,7 @@ type Account = {
 };
 
 const AccountPage = async () => {
-  const res = await fetch("http://localhost:5001/api/upbit/accounts");
+  const res = await fetch(`${BASE_URL}/api/upbit/accounts`);
   const accounts: Account[] = await res.json();
   return (
     <div>
