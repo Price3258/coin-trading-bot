@@ -1,5 +1,5 @@
 {
-  "name": "my-turborepo",
+  "name": "coin-trading-bot",
   "private": true,
   "scripts": {
     "build": "turbo run build",
