@@ -69,4 +69,39 @@ router.get("/strategy/:market", async (req, res, next) => {
   }
 });
 
+/**
+ * 자동 매매 주문 실행 API
+ * POST /api/trading/order
+ * docs: https://docs.upbit.com/reference/%EC%A3%BC%EB%AC%B8%ED%95%98%EA%B8%B0
+ */
+router.get("/order", async (req, res, next) => {
+  try {
+    const { market, side, volume, price, ord_type } = req.body;
+
+    if (!market || !side || !ord_type) {
+      return res.status(400).json({ error: "필수 파라미터가 없습니다." });
+    }
+
+    const orderParams = { market, side, ord_type };
+
+    if (ord_type === "limit") {
+      if (!price)
+        return res
+          .status(400)
+          .json({ error: "지정가 주문에는 가격이 필요합니다." });
+      orderParams.price = price;
+    }
+
+    if (ord_type !== "market") {
+      if (!volume) return res.status(400).json({ error: "수량이 필요합니다." });
+      orderParams.volume = volume;
+    }
+
+    const response = await upbitRequest("/orders", "POST", orderParams);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
