@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import upbitRoutes from "./routes/upbitRoutes.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
+import upbitRoutes from "./routes/upbitRoutes.js";
+import tradingRoutes from "./routes/tradingRoutes.js";
 
 dotenv.config(); // 환경 변수 로드
 
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3000", // 프론트엔드 도메인만 허용
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -23,7 +24,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/upbit", upbitRoutes);
+app.use("/api/trading", tradingRoutes);
 
+// ✅ 404 및 에러 핸들러는 라우트 **등록 후 마지막에 배치**
 app.use(notFoundHandler);
 app.use(errorHandler);
 

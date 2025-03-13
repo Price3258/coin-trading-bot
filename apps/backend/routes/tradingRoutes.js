@@ -1,6 +1,10 @@
 import express from "express";
-import { upbitRequest } from "../config/upbit";
-import { calculateMovingAverage } from "../utils/technicalIndicators";
+
+import { upbitRequest } from "../config/upbit.js";
+import {
+  calculateMovingAverage,
+  calculateRSI,
+} from "../utils/technicalIndicators.js";
 
 const router = express.Router();
 
@@ -11,6 +15,7 @@ const router = express.Router();
 router.get("/strategy/:market", async (req, res, next) => {
   try {
     const { market } = req.params;
+    console.log("market");
 
     /** 업비트 캔들 데이터 가져오기 (최근 100개)
      * docs: https://docs.upbit.com/reference/%EB%B6%84minute-%EC%BA%94%EB%93%A4-1
@@ -60,6 +65,8 @@ router.get("/strategy/:market", async (req, res, next) => {
       signal,
     });
   } catch (error) {
-    next.error();
+    next(error);
   }
 });
+
+export default router;
