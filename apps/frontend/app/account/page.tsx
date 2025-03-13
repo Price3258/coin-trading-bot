@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/constants/url";
+import { fetchAccount } from "@/apis/upbit";
 
 type Account = {
   currency: string;
@@ -8,13 +8,7 @@ type Account = {
 
 const AccountPage = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/api/upbit/accounts`);
-
-    if (!res.ok) {
-      throw new Error(`API 요청 실패: ${res.status} ${res.statusText}`);
-    }
-
-    const accounts: Account[] = await res.json();
+    const accounts: Account[] = await fetchAccount();
 
     return (
       <div>
