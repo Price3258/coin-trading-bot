@@ -25,7 +25,9 @@ router.get("/ticker/:market", async (req, res) => {
     const { market } = req.params;
     const data = await upbitRequest("/ticker", "GET", { markets: market });
     if (!data || data.length === 0) {
-      return res.status(404).json({ error: "존재하지 않는 시장입니다." });
+      const error = new Error(`❌ ${market}는 존재하지 않는 시장입니다.`);
+      error.status = 404; // ✅ 커스텀 HTTP 상태 코드
+      throw error;
     }
     res.json(data[0]);
   } catch (error) {

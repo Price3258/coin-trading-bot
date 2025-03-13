@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import upbitRoutes from "./routes/upbitRoutes.js";
+import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 
 dotenv.config(); // 환경 변수 로드
 
@@ -22,6 +23,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/upbit", upbitRoutes);
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // 환경 변수에서 포트 로드 (기본값 5000)
 const PORT = process.env.PORT || 5000;
