@@ -74,7 +74,7 @@ router.get("/strategy/:market", async (req, res, next) => {
  * POST /api/trading/order
  * docs: https://docs.upbit.com/reference/%EC%A3%BC%EB%AC%B8%ED%95%98%EA%B8%B0
  */
-router.get("/order", async (req, res, next) => {
+router.post("/order", async (req, res, next) => {
   try {
     const { market, side, volume, price, ord_type } = req.body;
 
@@ -82,19 +82,42 @@ router.get("/order", async (req, res, next) => {
       return res.status(400).json({ error: "필수 파라미터가 없습니다." });
     }
 
-    const orderParams = { market, side, ord_type };
+    let orderParams = { market, side, ord_type };
 
     if (ord_type === "limit") {
       if (!price)
         return res
           .status(400)
           .json({ error: "지정가 주문에는 가격이 필요합니다." });
-      orderParams.price = price;
-    }
+      if (!volume)
+        return res
+          .status(400)
+          .json({ error: "지정가 주문에는 수량이 필요합니다." });
 
-    if (ord_type !== "market") {
-      if (!volume) return res.status(400).json({ error: "수량이 필요합니다." });
+      orderParams.price = price;
       orderParams.volume = volume;
+    } else if (ord_type === "market") {
+      // 시장가 매도 (수량 필요)
+      if (side === "ask" && !volume) {
+        return res
+          .status(400)
+          .json({ error: "시장가 매도에는 수량이 필요합니다." });
+      }
+      if (side === "ask") {
+        orderParams.volume = volume;
+      }
+    } else if (ord_type === "price") {
+      // 시장가 매수 (가격 필요)
+      if (side === "bid" && !price) {
+        return res
+          .status(400)
+          .json({ error: "시장가 매수에는 가격이 필요합니다." });
+      }
+      if (side === "bid") {
+        orderParams.price = price;
+      }
+    } else {
+      return res.status(400).json({ error: "올바르지 않은 ord_type입니다." });
     }
 
     const response = await upbitRequest("/orders", "POST", orderParams);
