@@ -1,38 +1,38 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import { fetchAccount } from "@/apis/upbit";
+import { Account } from "@/types/upbit";
 
-type Account = {
-  currency: string;
-  balance: string;
-  avg_buy_price: string;
-};
+const AccountPage = () => {
+  const {
+    data: accounts,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<Account[]>({
+    queryKey: ["account"],
+    queryFn: fetchAccount,
+    refetchInterval: 10000, // ✅ 10초마다 최신 데이터 반영
+  });
 
-const AccountPage = async () => {
-  try {
-    const accounts: Account[] = await fetchAccount();
+  if (isLoading) return <p>로딩 중...</p>;
+  if (error) return <p>데이터를 불러오는 중 오류가 발생했습니다.</p>;
 
-    return (
-      <div>
-        <h1>내 계좌 정보</h1>
-        <ul>
-          {accounts.map((acc, index) => (
-            <li key={index}>
-              <strong>{acc.currency}</strong>: {acc.balance} (평균 매수가:{" "}
-              {acc.avg_buy_price}원)
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  } catch (error) {
-    console.error("계좌 정보를 가져오는 중 에러 발생:", error);
-
-    return (
-      <div>
-        <h1>내 계좌 정보</h1>
-        <p>계좌 정보를 불러오는 중 오류가 발생했습니다.</p>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>내 계좌 정보</h1>
+      <button onClick={() => refetch()}>🔄 새로고침</button>
+      <ul>
+        {accounts?.map((acc, index) => (
+          <li key={index}>
+            <strong>{acc.currency}</strong>: {acc.balance} (평균 매수가:{" "}
+            {acc.avg_buy_price}원)
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default AccountPage;
