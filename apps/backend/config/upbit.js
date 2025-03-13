@@ -30,6 +30,10 @@ const generateUpbitJWT = (query = "") => {
 
 /**
  * 업비트 API 호출 함수
+ * @param {string} endpoint endpoint
+ * @param {string} method HTTP METHOD
+ * @param {Object} params query params
+ * @returns {number[]} 이동평균 값 배열
  */
 export const upbitRequest = async (endpoint, method = "GET", params = {}) => {
   try {
