@@ -36,4 +36,16 @@ router.get("/ticker/:market", async (req, res) => {
   }
 });
 
+/**
+ * 거래 가능한 코인 목록 조회
+ */
+router.get("/market/all", async (req, res) => {
+  try {
+    const data = await upbitRequest("/market/all", "GET");
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "거래 가능한 코인 목록 조회 실패" });
+  }
+});
+
 export default router;
