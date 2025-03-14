@@ -3,3 +3,9 @@ export type Account = {
   balance: string; // 보유 금액
   avg_buy_price: string; // 평균 매수가
 };
+
+export type MarketList = {
+  market: string;
+  korean_name: string;
+  english_name: string;
+};
