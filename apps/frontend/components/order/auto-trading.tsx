@@ -1,46 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAutoTradingStore } from "@/store/autoTradingStore";
+import { BASE_URL } from "@/constants/url";
 
 const AutoTrading = () => {
-  const [isAutoTrading, setIsAutoTrading] = useState(false);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const { isAutoTrading, toggleAutoTrading } = useAutoTradingStore();
+
+  console.log(isAutoTrading);
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["autoTrading"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5001/api/trading/auto-trade");
+      const res = await fetch(`${BASE_URL}/api/trading/auto-trade`);
       return res.json();
     },
-    enabled: false, // ✅ 처음에는 자동 실행 안 함
+    enabled: false,
   });
-
-  // ✅ 자동 매매 토글 함수
-  const toggleAutoTrading = () => {
-    if (isAutoTrading) {
-      // 🔴 자동 매매 중지
-      if (intervalId) {
-        clearInterval(intervalId);
-        setIntervalId(null);
-      }
-      setIsAutoTrading(false);
-    } else {
-      // 🟢 자동 매매 시작
-      const newIntervalId = setInterval(() => {
-        refetch(); // 10초마다 자동 매매 실행
-      }, 10000);
-      setIntervalId(newIntervalId);
-      setIsAutoTrading(true);
-    }
-  };
-
-  // ✅ 컴포넌트 언마운트 시 자동 매매 중지
-  useEffect(() => {
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [intervalId]);
 
   return (
     <div className="mx-auto mt-3 max-w-4xl rounded-lg bg-white p-6 shadow-lg">
@@ -53,7 +29,7 @@ const AutoTrading = () => {
             ? "bg-red-500 hover:bg-red-600"
             : "bg-blue-500 hover:bg-blue-600"
         }`}
-        onClick={toggleAutoTrading}
+        onClick={() => toggleAutoTrading(!isAutoTrading, refetch)}
       >
         {isAutoTrading ? "🔴 자동 매매 중지" : "🟢 자동 매매 시작"}
       </button>
