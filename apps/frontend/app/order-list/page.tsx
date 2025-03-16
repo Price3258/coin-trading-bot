@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import OrderListContent from "@/components/order-list/order-list-content";
 import { ClosedOrder } from "@/types/order";
 import OrderListHeader from "@/components/order-list/order-list-header";
+import { BASE_URL } from "@/constants/url";
 
 const OrderListPage = () => {
   const [orders, setOrders] = useState<ClosedOrder[]>([]);
@@ -16,12 +17,9 @@ const OrderListPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:5001/api/trading/orders/closed",
-          {
-            cache: "no-store",
-          }
-        );
+        const res = await fetch(`${BASE_URL}/api/trading/orders/closed`, {
+          cache: "no-store",
+        });
         if (!res.ok) throw new Error("주문 내역을 불러오는데 실패했습니다.");
         const data: ClosedOrder[] = await res.json();
         setOrders(data);
