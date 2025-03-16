@@ -7,8 +7,6 @@ import { BASE_URL } from "@/constants/url";
 const AutoTrading = () => {
   const { isAutoTrading, toggleAutoTrading } = useAutoTradingStore();
 
-  console.log(isAutoTrading);
-
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["autoTrading"],
     queryFn: async () => {
