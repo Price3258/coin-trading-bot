@@ -19,12 +19,12 @@ const OrderListPage = () => {
   const [filter, setFilter] = useState<"all" | "bid" | "ask">("all");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  // ✅ 주문 내역 가져오기 (클라이언트에서 최신 데이터 유지)
+  // ✅ 주문 내역 가져오기
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const res = await fetch("http://localhost:5001/api/trading/orders", {
-          cache: "no-store", // 최신 데이터 가져오기
+          cache: "no-store",
         });
         if (!res.ok) throw new Error("주문 내역을 불러오는데 실패했습니다.");
         const data: Order[] = await res.json();
@@ -58,13 +58,14 @@ const OrderListPage = () => {
   }, [filter, sortOrder, orders]);
 
   return (
-    <div>
-      <h1>📜 주문 내역</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">📜 주문 내역</h1>
 
       {/* 📌 필터링 & 정렬 UI */}
-      <div style={{ marginBottom: "16px" }}>
-        <label>🛒 주문 유형:</label>
+      <div className="flex items-center gap-4 mb-4">
+        <label className="font-medium">🛒 주문 유형:</label>
         <select
+          className="border p-2 rounded"
           value={filter}
           onChange={(e) => setFilter(e.target.value as "all" | "bid" | "ask")}
         >
@@ -73,8 +74,9 @@ const OrderListPage = () => {
           <option value="ask">매도</option>
         </select>
 
-        <label>📅 정렬:</label>
+        <label className="font-medium">📅 정렬:</label>
         <select
+          className="border p-2 rounded"
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as "newest" | "oldest")}
         >
@@ -83,20 +85,47 @@ const OrderListPage = () => {
         </select>
       </div>
 
-      {/* 📌 주문 내역 목록 */}
-      <ul>
-        {filteredOrders.length === 0 ? (
-          <p>⏳ 주문 내역이 없습니다.</p>
-        ) : (
-          filteredOrders.map((order) => (
-            <li key={order.uuid}>
-              [{order.market}] {order.side === "bid" ? "🟢 매수" : "🔴 매도"} |{" "}
-              {order.ord_type} | {order.volume} 개 | {order.price} 원 |{" "}
-              {new Date(order.created_at).toLocaleString()}
-            </li>
-          ))
-        )}
-      </ul>
+      {/* 📌 주문 내역 테이블 */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-300">
+          <thead className="bg-gray-200">
+            <tr>
+              <th className="p-2 border">거래 마켓</th>
+              <th className="p-2 border">주문 유형</th>
+              <th className="p-2 border">수량</th>
+              <th className="p-2 border">가격</th>
+              <th className="p-2 border">주문 시간</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredOrders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center p-4">
+                  ⏳ 주문 내역이 없습니다.
+                </td>
+              </tr>
+            ) : (
+              filteredOrders.map((order) => (
+                <tr key={order.uuid} className="border-b">
+                  <td className="p-2 text-center">{order.market}</td>
+                  <td
+                    className={`p-2 text-center ${order.side === "bid" ? "text-green-500" : "text-red-500"}`}
+                  >
+                    {order.side === "bid" ? "🟢 매수" : "🔴 매도"}
+                  </td>
+                  <td className="p-2 text-center">{order.volume}</td>
+                  <td className="p-2 text-center">
+                    {parseFloat(order.price).toLocaleString()} 원
+                  </td>
+                  <td className="p-2 text-center">
+                    {new Date(order.created_at).toLocaleString()}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
