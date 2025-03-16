@@ -21,49 +21,83 @@ const OrderPage = () => {
   };
 
   return (
-    <div>
-      <h1>자동 매매 주문</h1>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">
+          📈 자동 매매 주문
+        </h1>
 
-      <label>거래 마켓:</label>
-      <input value={market} onChange={(e) => setMarket(e.target.value)} />
+        <div className="flex flex-col gap-3">
+          <label className="font-medium text-gray-800">거래 마켓:</label>
+          <select
+            className="border p-2 rounded-lg text-gray-800"
+            value={market}
+            onChange={(e) => setMarket(e.target.value as "KRW-BTC" | "KRW-ETH")}
+          >
+            <option value="KRW-BTC">비트코인</option>
+            <option value="KRW-ETH">이더리움</option>
+          </select>
 
-      <label>매수/매도:</label>
-      <select
-        value={side}
-        onChange={(e) => setSide(e.target.value as "bid" | "ask")}
-      >
-        <option value="bid">매수</option>
-        <option value="ask">매도</option>
-      </select>
+          <label className="font-medium text-gray-800">매수/매도:</label>
+          <select
+            className="border p-2 rounded-lg text-gray-800"
+            value={side}
+            onChange={(e) => setSide(e.target.value as "bid" | "ask")}
+          >
+            <option value="bid">🟢 매수</option>
+            <option value="ask">🔴 매도</option>
+          </select>
 
-      <label>주문 유형:</label>
-      <select
-        value={ordType}
-        onChange={(e) =>
-          setOrdType(e.target.value as "limit" | "market" | "price")
-        }
-      >
-        <option value="market">시장가</option>
-        <option value="limit">지정가</option>
-      </select>
+          <label className="font-medium text-gray-800">주문 유형:</label>
+          <select
+            className="border p-2 rounded-lg text-gray-800"
+            value={ordType}
+            onChange={(e) =>
+              setOrdType(e.target.value as "limit" | "market" | "price")
+            }
+          >
+            <option value="market">시장가</option>
+            <option value="limit">지정가</option>
+          </select>
 
-      {ordType !== "market" && (
-        <>
-          <label>수량:</label>
-          <input value={volume} onChange={(e) => setVolume(e.target.value)} />
+          {ordType !== "market" && (
+            <>
+              <label className="font-medium text-gray-800">수량:</label>
+              <input
+                className="border p-2 rounded-lg text-gray-800"
+                value={volume}
+                onChange={(e) => setVolume(e.target.value)}
+              />
 
-          <label>가격:</label>
-          <input value={price} onChange={(e) => setPrice(e.target.value)} />
-        </>
-      )}
+              <label className="font-medium text-gray-800">가격:</label>
+              <input
+                className="border p-2 rounded-lg text-gray-800"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </>
+          )}
 
-      <button onClick={handleOrder} disabled={isPending}>
-        주문하기
-      </button>
+          <button
+            onClick={handleOrder}
+            disabled={isPending}
+            className={`mt-4 px-4 py-2 text-white rounded-lg ${
+              isPending
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
+          >
+            {isPending ? "주문 처리 중..." : "📩 주문하기"}
+          </button>
 
-      {isPending && <p>주문 처리 중...</p>}
-      {error && <p>오류 발생: {error.message}</p>}
-      {data && <p>✅ 주문 완료! ID: {data.uuid}</p>}
+          {error && (
+            <p className="text-red-500 mt-2">🚨 오류 발생: {error.message}</p>
+          )}
+          {data && (
+            <p className="text-green-500 mt-2">✅ 주문 완료! ID: {data.uuid}</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
