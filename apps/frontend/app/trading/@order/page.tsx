@@ -30,7 +30,7 @@ const OrderPage = () => {
         <div className="flex flex-col gap-3">
           <label className="font-medium text-gray-800">거래 마켓:</label>
           <select
-            className="border p-2 rounded-lg text-gray-800"
+            className="border p-3 rounded-lg text-gray-800"
             value={market}
             onChange={(e) => setMarket(e.target.value as "KRW-BTC" | "KRW-ETH")}
           >
@@ -40,7 +40,7 @@ const OrderPage = () => {
 
           <label className="font-medium text-gray-800">매수/매도:</label>
           <select
-            className="border p-2 rounded-lg text-gray-800"
+            className="border p-3 rounded-lg text-gray-800"
             value={side}
             onChange={(e) => setSide(e.target.value as "bid" | "ask")}
           >
@@ -50,7 +50,7 @@ const OrderPage = () => {
 
           <label className="font-medium text-gray-800">주문 유형:</label>
           <select
-            className="border p-2 rounded-lg text-gray-800"
+            className="border p-3 rounded-lg text-gray-800"
             value={ordType}
             onChange={(e) =>
               setOrdType(e.target.value as "limit" | "market" | "price")
@@ -64,14 +64,14 @@ const OrderPage = () => {
             <>
               <label className="font-medium text-gray-800">수량:</label>
               <input
-                className="border p-2 rounded-lg text-gray-800"
+                className="border p-3 rounded-lg text-gray-800"
                 value={volume}
                 onChange={(e) => setVolume(e.target.value)}
               />
 
               <label className="font-medium text-gray-800">가격:</label>
               <input
-                className="border p-2 rounded-lg text-gray-800"
+                className="border p-3 rounded-lg text-gray-800"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
