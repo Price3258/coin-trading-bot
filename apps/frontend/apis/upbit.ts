@@ -30,5 +30,5 @@ export const fetchMarketList = async () => {
   if (!res.ok) {
     throw new Error("종목 목록을 불러오는데 실패했습니다.");
   }
-  return res.json();
+  return res;
 };
