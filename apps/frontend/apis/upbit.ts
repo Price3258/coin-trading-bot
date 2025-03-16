@@ -26,9 +26,14 @@ export const fetchTicker = async () => {
  * 거래 가능한 코인 목록 조회
  */
 export const fetchMarketList = async () => {
-  const res = await fetch(`${UPBIT_URL}/market/all`);
-  if (!res.ok) {
-    throw new Error("종목 목록을 불러오는데 실패했습니다.");
+  try {
+    const res = await fetch(`${UPBIT_URL}/market/all`);
+    if (!res.ok) {
+      throw new Error("종목 목록을 불러오는데 실패했습니다.");
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+    return { error };
   }
-  return res;
 };
