@@ -1,16 +1,11 @@
 import { ReactNode } from "react";
 
 interface TradingLayoutProps {
-  children: ReactNode;
   strategy: ReactNode;
   order: ReactNode;
 }
 
-export default function TradingLayout({
-  children,
-  strategy,
-  order,
-}: TradingLayoutProps) {
+export default function TradingLayout({ strategy, order }: TradingLayoutProps) {
   return (
     <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
       <aside
@@ -19,10 +14,7 @@ export default function TradingLayout({
         {strategy}
       </aside>
 
-      <main style={{ flex: 2 }}>
-        {children}
-        {order}
-      </main>
+      <main style={{ flex: 2 }}>{order}</main>
     </div>
   );
 }
