@@ -4,7 +4,7 @@ export type Account = {
   avg_buy_price: string; // 평균 매수가
 };
 
-export type MarketList = {
+export type Market = {
   market: string;
   korean_name: string;
   english_name: string;
