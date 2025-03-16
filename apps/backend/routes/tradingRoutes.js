@@ -127,4 +127,17 @@ router.post("/order", async (req, res, next) => {
   }
 });
 
+/**
+ * 주문 내역 조회 API
+ * GET /api/trading/orders/closed
+ */
+router.get("/orders/closed", async (req, res, next) => {
+  try {
+    const response = await upbitRequest("/orders/closed", "GET");
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
