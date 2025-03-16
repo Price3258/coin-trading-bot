@@ -23,9 +23,7 @@ const OrderPage = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">
-          📈 자동 매매 주문
-        </h1>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">📈 매매 주문</h1>
 
         <div className="flex flex-col gap-3">
           <label className="font-medium text-gray-800">거래 마켓:</label>

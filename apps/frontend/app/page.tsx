@@ -1,11 +1,13 @@
 import MarketContent from "@/components/home/market-content";
+import AutoTrading from "@/components/order/auto-trading";
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>🚀 거래 가능 종목</h1>
+    <>
+      <AutoTrading />
+      <br />
       <MarketContent />
-    </div>
+    </>
   );
 };
 

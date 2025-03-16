@@ -140,4 +140,76 @@ router.get("/orders/closed", async (req, res, next) => {
   }
 });
 
+/**
+ * ✅ 자동 매매 실행 API
+ * GET /api/trading/auto-trade
+ */
+router.get("/auto-trade", async (req, res, next) => {
+  try {
+    const accounts = await upbitRequest("/accounts", "GET");
+    const btcAccount = accounts.find((acc) => acc.currency === "BTC");
+
+    console.log(accounts);
+
+    if (!btcAccount) {
+      return res.status(400).json({ error: "BTC 보유 내역이 없습니다." });
+    }
+
+    const avgBuyPrice = parseFloat(btcAccount.avg_buy_price);
+    const currentBalance = parseFloat(btcAccount.balance);
+
+    // 📌 1. 현재 시세 조회
+    const ticker = await upbitRequest("/ticker", "GET", { markets: "KRW-BTC" });
+    const currentPrice = parseFloat(ticker[0].trade_price);
+
+    // 📌 2. 매도 조건 (현재 가격이 평균 매수가 대비 3% 상승하면 매도)
+    const sellThreshold = avgBuyPrice * 1.03; // +3% 이익실현
+    if (currentPrice >= sellThreshold && currentBalance > 0.0001) {
+      const sellOrder = await upbitRequest("/orders", "POST", {
+        market: "KRW-BTC",
+        side: "ask",
+        volume: "0.00001", // ✅ 보유량 일부 매도
+        ord_type: "limit",
+        price: currentPrice,
+      });
+
+      return res.json({
+        action: "sell",
+        avgBuyPrice,
+        currentPrice,
+        status: "매도 주문 실행됨",
+        orderId: sellOrder.uuid,
+      });
+    }
+
+    // 📌 3. 매수 조건 (현재 가격이 평균 매수가 대비 5% 하락하면 추가 매수)
+    const buyThreshold = avgBuyPrice * 0.95; // -5% 저가 매수
+    if (currentPrice <= buyThreshold) {
+      const buyOrder = await upbitRequest("/orders", "POST", {
+        market: "KRW-BTC",
+        side: "bid",
+        price: "5000", // 5천원 추가 매수
+        ord_type: "price",
+      });
+
+      return res.json({
+        action: "buy",
+        avgBuyPrice,
+        currentPrice,
+        status: "매수 주문 실행됨",
+        orderId: buyOrder.uuid,
+      });
+    }
+
+    return res.json({
+      action: "hold",
+      avgBuyPrice,
+      currentPrice,
+      status: "매매 조건 미충족",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
