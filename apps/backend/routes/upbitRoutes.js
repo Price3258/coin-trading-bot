@@ -1,6 +1,8 @@
 import express from "express";
+import axios from "axios";
 
 import { upbitRequest } from "../config/upbit.js";
+import { UPBIT_CANDLE_API } from "../constants/url.js";
 
 const router = express.Router();
 
@@ -45,6 +47,20 @@ router.get("/market/all", async (req, res) => {
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: "거래 가능한 코인 목록 조회 실패" });
+  }
+});
+
+// ✅ 업비트 캔들 데이터 프록시 API
+router.get("/candles/:market", async (req, res) => {
+  try {
+    const { market } = req.params;
+    const response = await axios.get(
+      `${UPBIT_CANDLE_API}?market=${market}&count=50`
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("업비트 차트 데이터 가져오기 오류:", error);
+    res.status(500).json({ error: "업비트 차트 데이터를 가져올 수 없습니다." });
   }
 });
 
