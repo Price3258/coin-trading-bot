@@ -1,4 +1,4 @@
-import { UPBIT_URL } from "@/constants/url";
+import { BASE_URL, UPBIT_URL } from "@/constants/url";
 import axios from "axios";
 
 /*
@@ -36,4 +36,12 @@ export const fetchMarketList = async () => {
     console.log(error);
     return { error };
   }
+};
+
+export const fetchOrders = async () => {
+  const res = await fetch(`${BASE_URL}/api/trading/orders/closed`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("주문 내역을 불러오는데 실패했습니다.");
+  return res.json();
 };
