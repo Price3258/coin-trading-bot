@@ -5,9 +5,9 @@ import ModalCloseButton from "@/components/modal/modal-close-button";
 export default async function MarketModal({
   params,
 }: {
-  params: { marketId: string };
+  params: Promise<{ marketId: string }>;
 }) {
-  const { marketId } = await params;
+  const marketId = (await params).marketId;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <ModalBackdrop />
