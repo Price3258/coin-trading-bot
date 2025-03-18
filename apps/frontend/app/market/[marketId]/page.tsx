@@ -1,9 +1,10 @@
 export default async function MarketPage({
   params,
 }: {
-  params: { marketId: string };
+  params: Promise<{ marketId: string }>;
 }) {
-  const { marketId } = await params;
+  const marketId = (await params).marketId;
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-bold text-gray-800">
