@@ -71,6 +71,7 @@ const OrderListPage = () => {
       </header>
 
       <main className="flex h-full justify-center p-6">{renderContent}</main>
+
     </div>
   );
 };
