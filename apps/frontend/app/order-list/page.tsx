@@ -37,19 +37,32 @@ const OrderListPage = () => {
     return updatedOrders;
   }, [filter, sortOrder, orders]);
 
+  let renderContent;
+
   if (isLoading) {
-    return (
+    renderContent = (
       <p className="text-center text-gray-500">📡 주문 내역을 불러오는 중...</p>
     );
   }
 
   if (isError) {
-    return (
+    renderContent = (
       <p className="text-center text-red-500">
         ❌ 주문 내역을 불러오는데 실패했습니다.
       </p>
     );
   }
+  renderContent = (
+    <div className="h-full w-full max-w-5xl rounded-lg bg-white p-6 shadow-lg">
+      <OrderListHeader
+        filter={filter}
+        setFilter={setFilter}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
+      <OrderListContent orders={filteredOrders} />
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -57,17 +70,7 @@ const OrderListPage = () => {
         <h1 className="text-2xl font-bold text-gray-800">📜 주문 내역</h1>
       </header>
 
-      <main className="flex h-full justify-center p-6">
-        <div className="h-full w-full max-w-5xl rounded-lg bg-white p-6 shadow-lg">
-          <OrderListHeader
-            filter={filter}
-            setFilter={setFilter}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
-          />
-          <OrderListContent orders={filteredOrders} />
-        </div>
-      </main>
+      <main className="flex h-full justify-center p-6">{renderContent}</main>
     </div>
   );
 };

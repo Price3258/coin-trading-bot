@@ -23,7 +23,7 @@ export default function Navigation() {
           </li>
           <li>
             <Link href="/trading" className="hover:text-gray-300">
-              자동 매매
+              자동 거래 전략
             </Link>
           </li>
           <li>
