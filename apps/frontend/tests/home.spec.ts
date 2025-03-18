@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("홈페이지 테스트", () => {
-  test("홈페이지에서 API 요청을 Mocking", async ({ page }) => {
+  test("홈페이지 이동", async ({ page }) => {
     // ✅ 페이지 이동
     await page.goto("/");
 
