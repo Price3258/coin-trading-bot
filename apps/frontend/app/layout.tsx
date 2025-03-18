@@ -4,6 +4,7 @@ import ReactQueryProvider from "@/providers/react-query-provider";
 import Navigation from "@/components/layout/navigation";
 
 import "./globals.css";
+import { MSWComponent } from "@/components/msw/msw-component";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +31,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ReactQueryProvider>
-          <Navigation />
-          {children}
-          {modal}
-        </ReactQueryProvider>
+        <MSWComponent>
+          <ReactQueryProvider>
+            <Navigation />
+            {children}
+            {modal}
+          </ReactQueryProvider>
+        </MSWComponent>
       </body>
     </html>
   );

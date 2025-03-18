@@ -1,5 +1,5 @@
 import { Market } from "@/types/upbit";
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 
 const mockMarketAll: Market = {
   market: "KRW-BTC",
@@ -8,8 +8,9 @@ const mockMarketAll: Market = {
 };
 
 export const readHandlers = [
-  http.get(`api/upbit/market/all`, () => {
+  http.get(`http://localhost:5001/api/upbit/market/all`, async () => {
     console.log("mocking");
+    await delay(250);
     return HttpResponse.json<Market[]>([mockMarketAll]);
   }),
 ];

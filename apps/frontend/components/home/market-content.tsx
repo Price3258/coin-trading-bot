@@ -1,15 +1,29 @@
+"use client";
+
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
 import { Market } from "@/types/upbit";
 import { UPBIT_URL } from "@/constants/url";
 
-export default async function MarketContent() {
+const fetchMarkets = async (): Promise<Market[]> => {
   const res = await fetch(`${UPBIT_URL}/market/all`);
-  if (!res.ok) {
-    return <p>Error </p>;
-  }
+  if (!res.ok) throw new Error("데이터를 불러오는 데 실패했습니다.");
+  return res.json();
+};
 
-  const markets: Market[] = await res.json();
+export default function MarketContent() {
+  const {
+    data: markets,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["markets"],
+    queryFn: fetchMarkets,
+  });
+
+  if (isLoading) return <p>📡 데이터 불러오는 중...</p>;
+  if (error) return <p>❌ 데이터 로딩 실패: {error.message}</p>;
 
   return (
     <div className="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg">

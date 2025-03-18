@@ -1,8 +1,9 @@
 import { test as base, expect } from "@playwright/test";
-import { handlers } from "@/mocks/handlers";
 import { http } from "msw";
 import type { MockServiceWorker } from "playwright-msw";
 import { createWorkerFixture } from "playwright-msw";
+
+import { handlers } from "@/mocks/handlers";
 
 const test = base.extend<{
   worker: MockServiceWorker;
