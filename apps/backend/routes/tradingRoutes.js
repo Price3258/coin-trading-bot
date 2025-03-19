@@ -146,34 +146,62 @@ router.get("/orders/closed", async (req, res, next) => {
  */
 router.get("/auto-trade", async (req, res, next) => {
   try {
+    const market = req.query.market || "KRW-BTC"; // ✅ 기본값: BTC
+    const currency = market.split("-")[1]; // BTC, ETH 등 추출
+
+    // 📌 1. 계좌 정보 조회
     const accounts = await upbitRequest("/accounts", "GET");
-    const btcAccount = accounts.find((acc) => acc.currency === "BTC");
 
-    console.log(accounts);
+    const account = accounts.find((acc) => acc.currency === currency);
 
-    if (!btcAccount) {
-      return res.status(400).json({ error: "BTC 보유 내역이 없습니다." });
+    if (!account) {
+      console.warn(`⚠️ ${currency} 보유 내역 없음 → 최초 매수 실행`);
+
+      const firstBuyOrder = await upbitRequest("/orders", "POST", {
+        market: market,
+        side: "bid",
+        price: "5000", // ✅ 5천원 어치 자동 매수
+        ord_type: "price",
+      });
+
+      return res.json({
+        market,
+        action: "first-buy",
+        status: "보유 내역 없음 → 최초 매수 실행",
+        orderId: firstBuyOrder.uuid,
+      });
     }
 
-    const avgBuyPrice = parseFloat(btcAccount.avg_buy_price);
-    const currentBalance = parseFloat(btcAccount.balance);
+    const avgBuyPrice = parseFloat(account.avg_buy_price);
+    const currentBalance = parseFloat(account.balance);
 
-    // 📌 1. 현재 시세 조회
-    const ticker = await upbitRequest("/ticker", "GET", { markets: "KRW-BTC" });
+    // 📌 2. 현재 시세 조회
+    const ticker = await upbitRequest("/ticker", "GET", { markets: market });
+
+    if (!ticker || ticker.length === 0) {
+      console.error("❌ 시세 조회 실패");
+      return res.status(400).json({ error: "시세 조회 실패" });
+    }
+
     const currentPrice = parseFloat(ticker[0].trade_price);
 
-    // 📌 2. 매도 조건 (현재 가격이 평균 매수가 대비 3% 상승하면 매도)
-    const sellThreshold = avgBuyPrice * 1.03; // +3% 이익실현
+    // 📌 3. 매도 조건
+    const sellThreshold = avgBuyPrice * 1.03;
     if (currentPrice >= sellThreshold && currentBalance > 0.0001) {
+      console.log(`✅ 매도 조건 충족: ${currentPrice} >= ${sellThreshold}`);
+
       const sellOrder = await upbitRequest("/orders", "POST", {
-        market: "KRW-BTC",
+        market: market,
         side: "ask",
-        volume: "0.00001", // ✅ 보유량 일부 매도
+        volume: (currentBalance * 0.5).toFixed(8), // ✅ 50% 매도
         ord_type: "limit",
         price: currentPrice,
       });
 
+      console.log("✅ 매도 주문 완료:", sellOrder);
+
       return res.json({
+        market,
         action: "sell",
         avgBuyPrice,
         currentPrice,
@@ -182,17 +210,22 @@ router.get("/auto-trade", async (req, res, next) => {
       });
     }
 
-    // 📌 3. 매수 조건 (현재 가격이 평균 매수가 대비 5% 하락하면 추가 매수)
-    const buyThreshold = avgBuyPrice * 0.95; // -5% 저가 매수
+    // 📌 4. 매수 조건
+    const buyThreshold = avgBuyPrice * 0.95;
     if (currentPrice <= buyThreshold) {
+      console.log(`✅ 매수 조건 충족: ${currentPrice} <= ${buyThreshold}`);
+
       const buyOrder = await upbitRequest("/orders", "POST", {
-        market: "KRW-BTC",
+        market: market,
         side: "bid",
-        price: "5000", // 5천원 추가 매수
+        price: "5000",
         ord_type: "price",
       });
 
+      console.log("✅ 매수 주문 완료:", buyOrder);
+
       return res.json({
+        market,
         action: "buy",
         avgBuyPrice,
         currentPrice,
@@ -201,13 +234,17 @@ router.get("/auto-trade", async (req, res, next) => {
       });
     }
 
+    console.log("⏳ 매매 조건 미충족");
+
     return res.json({
+      market,
       action: "hold",
       avgBuyPrice,
       currentPrice,
       status: "매매 조건 미충족",
     });
   } catch (error) {
+    console.error("❌ 서버 오류:", error);
     next(error);
   }
 });

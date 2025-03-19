@@ -1,6 +1,7 @@
 import CoinChart from "@/components/candles/coin-chart";
 import ModalBackdrop from "@/components/modal/modal-backdrop";
 import ModalCloseButton from "@/components/modal/modal-close-button";
+import ModalMarketAddButton from "@/components/modal/modal-market-add-button";
 
 export default async function MarketModal({
   params,
@@ -8,6 +9,7 @@ export default async function MarketModal({
   params: Promise<{ marketId: string }>;
 }) {
   const marketId = (await params).marketId;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <ModalBackdrop />
@@ -22,6 +24,7 @@ export default async function MarketModal({
         <div className="h-[400px] w-full">
           <CoinChart marketId={marketId} />
         </div>
+        <ModalMarketAddButton marketId={marketId} />
       </div>
     </div>
   );
