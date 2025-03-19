@@ -22,4 +22,12 @@ export const handlers = [
       },
     ]);
   }),
+  http.get(`${BASE_URL}/api/trading/auto-trade`, () => {
+    return HttpResponse.json({
+      action: "buy",
+      currentPrice: 6500,
+      avgBuyPrice: 600,
+      status: "매수 주문 실행됨",
+    });
+  }),
 ];

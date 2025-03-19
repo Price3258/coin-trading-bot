@@ -22,8 +22,8 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  // reporter: "html",
-  reporter: "./my-reporter.ts",
+  reporter: "html",
+  // reporter: "./my-reporter.ts",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -73,7 +73,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "npm run dev:test",
+    command: "NEXT_PUBLIC_API_MOCKING=enabled npm run dev:test",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
   },
