@@ -1,36 +1,35 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type AutoTradingStore = {
-  isAutoTrading: boolean;
-  intervalId: NodeJS.Timeout | null;
-  toggleAutoTrading: (start: boolean, refetch: () => void) => void;
-  stopAutoTrading: () => void;
+  autoTradingPairs: { [key: string]: boolean }; // { "KRW-BTC": true, "KRW-ETH": false }
+  toggleAutoTrading: (market: string, start: boolean) => void;
+  removeAutoTrading: (market: string) => void;
 };
 
-export const useAutoTradingStore = create<AutoTradingStore>((set) => ({
-  isAutoTrading: false,
-  intervalId: null,
+export const useAutoTradingStore = create<AutoTradingStore>()(
+  persist(
+    (set) => ({
+      autoTradingPairs: {},
 
-  toggleAutoTrading: (start, refetch) => {
-    if (start) {
-      // ✅ 자동 매매 시작 (10초마다 refetch 실행)
-      const newIntervalId = setInterval(() => {
-        refetch();
-      }, 10000);
-      set({ isAutoTrading: true, intervalId: newIntervalId });
-    } else {
-      // 🔴 자동 매매 중지
-      set((state) => {
-        if (state.intervalId) clearInterval(state.intervalId);
-        return { isAutoTrading: false, intervalId: null };
-      });
-    }
-  },
+      toggleAutoTrading: (market, start) => {
+        console.log(`🚀 toggleAutoTrading 실행: ${market}, start=${start}`);
 
-  stopAutoTrading: () => {
-    set((state) => {
-      if (state.intervalId) clearInterval(state.intervalId);
-      return { isAutoTrading: false, intervalId: null };
-    });
-  },
-}));
+        set((state) => {
+          const updatedPairs = { ...state.autoTradingPairs, [market]: start };
+          return { autoTradingPairs: updatedPairs };
+        });
+      },
+
+      removeAutoTrading: (market) => {
+        set((state) => {
+          const updatedPairs = { ...state.autoTradingPairs };
+          delete updatedPairs[market];
+
+          return { autoTradingPairs: updatedPairs };
+        });
+      },
+    }),
+    { name: "auto-trading-store" }, // ✅ localStorage에 자동 저장
+  ),
+);

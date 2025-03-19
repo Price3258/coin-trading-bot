@@ -4,21 +4,34 @@ import { useQuery } from "@tanstack/react-query";
 import { useAutoTradingStore } from "@/store/autoTradingStore";
 import { BASE_URL } from "@/constants/url";
 
-const AutoTrading = () => {
-  const { isAutoTrading, toggleAutoTrading } = useAutoTradingStore();
+const AutoTrading = ({ market }: { market: string }) => {
+  const { autoTradingPairs, toggleAutoTrading, removeAutoTrading } =
+    useAutoTradingStore();
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["autoTrading"],
+  const isAutoTrading = autoTradingPairs[market] || false;
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["autoTrading", market],
     queryFn: async () => {
-      const res = await fetch(`${BASE_URL}/api/trading/auto-trade`);
+      console.log(`📡 API 호출 실행: ${market}`);
+      const res = await fetch(
+        `${BASE_URL}/api/trading/auto-trade?market=${market}`,
+      );
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "자동매매 요청 실패");
+      }
       return res.json();
     },
-    enabled: false,
+    enabled: isAutoTrading, // 자동매매 활성화 상태일 때만 실행
+    refetchInterval: isAutoTrading ? 10000 : false, //  10초마다 자동 실행
   });
 
   return (
     <div className="mx-auto mt-3 max-w-4xl rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-2xl font-bold text-gray-800">🤖 자동 매매</h1>
+      <h1 className="mb-4 text-2xl font-bold text-gray-800">
+        🤖 {market} 자동 매매
+      </h1>
 
       {/* 📌 자동 매매 토글 버튼 */}
       <button
@@ -27,14 +40,27 @@ const AutoTrading = () => {
             ? "bg-red-500 hover:bg-red-600"
             : "bg-blue-500 hover:bg-blue-600"
         }`}
-        onClick={() => toggleAutoTrading(!isAutoTrading, refetch)}
+        onClick={() => toggleAutoTrading(market, !isAutoTrading)}
       >
         {isAutoTrading ? "🔴 자동 매매 중지" : "🟢 자동 매매 시작"}
       </button>
 
-      {isLoading && <p>📡 자동 매매 신호 확인 중...</p>}
+      {/* 자동매매 제거 버튼 */}
+      {!isAutoTrading && (
+        <button
+          className="ml-4 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-700"
+          onClick={() => removeAutoTrading(market)}
+        >
+          🗑️ 자동매매 제거
+        </button>
+      )}
 
-      {data && (
+      {isLoading && <p>📡 자동 매매 신호 확인 중...</p>}
+      {isError && (
+        <p className="text-red-600">❌ {error?.message || "오류 발생"}</p>
+      )}
+
+      {data && !isError && (
         <div className="mt-4 rounded-lg bg-gray-100 p-4">
           <p className="text-black">
             📝 매매 결과:{" "}
