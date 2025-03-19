@@ -1,4 +1,4 @@
-import { handlers } from "@/mocks/handlers";
+import { handlers } from "~/mocks/handlers";
 import { test as base, expect } from "@playwright/test";
 import { http } from "msw";
 import type { MockServiceWorker, Config } from "playwright-msw";

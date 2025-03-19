@@ -1,7 +1,7 @@
 "use client";
 
-import { postPlaceOrder } from "@/apis/trading";
-import { OrderRequest } from "@/types/trading";
+import { postPlaceOrder } from "~/apis/trading";
+import { OrderRequest } from "~/types/trading";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -21,14 +21,14 @@ const OrderPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">📈 매매 주문</h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+        <h1 className="mb-4 text-2xl font-bold text-gray-800">📈 매매 주문</h1>
 
         <div className="flex flex-col gap-3">
           <label className="font-medium text-gray-800">거래 마켓:</label>
           <select
-            className="border p-3 rounded-lg text-gray-800"
+            className="rounded-lg border p-3 text-gray-800"
             value={market}
             onChange={(e) => setMarket(e.target.value as "KRW-BTC" | "KRW-ETH")}
           >
@@ -38,7 +38,7 @@ const OrderPage = () => {
 
           <label className="font-medium text-gray-800">매수/매도:</label>
           <select
-            className="border p-3 rounded-lg text-gray-800"
+            className="rounded-lg border p-3 text-gray-800"
             value={side}
             onChange={(e) => setSide(e.target.value as "bid" | "ask")}
           >
@@ -48,7 +48,7 @@ const OrderPage = () => {
 
           <label className="font-medium text-gray-800">주문 유형:</label>
           <select
-            className="border p-3 rounded-lg text-gray-800"
+            className="rounded-lg border p-3 text-gray-800"
             value={ordType}
             onChange={(e) =>
               setOrdType(e.target.value as "limit" | "market" | "price")
@@ -62,14 +62,14 @@ const OrderPage = () => {
             <>
               <label className="font-medium text-gray-800">수량:</label>
               <input
-                className="border p-3 rounded-lg text-gray-800"
+                className="rounded-lg border p-3 text-gray-800"
                 value={volume}
                 onChange={(e) => setVolume(e.target.value)}
               />
 
               <label className="font-medium text-gray-800">가격:</label>
               <input
-                className="border p-3 rounded-lg text-gray-800"
+                className="rounded-lg border p-3 text-gray-800"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
@@ -79,9 +79,9 @@ const OrderPage = () => {
           <button
             onClick={handleOrder}
             disabled={isPending}
-            className={`mt-4 px-4 py-2 text-white rounded-lg ${
+            className={`mt-4 rounded-lg px-4 py-2 text-white ${
               isPending
-                ? "bg-gray-400 cursor-not-allowed"
+                ? "cursor-not-allowed bg-gray-400"
                 : "bg-blue-500 hover:bg-blue-600"
             }`}
           >
@@ -89,10 +89,10 @@ const OrderPage = () => {
           </button>
 
           {error && (
-            <p className="text-red-500 mt-2">🚨 오류 발생: {error.message}</p>
+            <p className="mt-2 text-red-500">🚨 오류 발생: {error.message}</p>
           )}
           {data && (
-            <p className="text-green-500 mt-2">✅ 주문 완료! ID: {data.uuid}</p>
+            <p className="mt-2 text-green-500">✅ 주문 완료! ID: {data.uuid}</p>
           )}
         </div>
       </div>

@@ -3,10 +3,10 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import OrderListContent from "@/components/order-list/order-list-content";
-import { ClosedOrder } from "@/types/order";
-import OrderListHeader from "@/components/order-list/order-list-header";
-import { fetchOrders } from "@/apis/upbit";
+import OrderListContent from "~/components/order-list/order-list-content";
+import { ClosedOrder } from "~/types/order";
+import OrderListHeader from "~/components/order-list/order-list-header";
+import { fetchOrders } from "~/apis/upbit";
 
 const OrderListPage = () => {
   const [filter, setFilter] = useState<"all" | "bid" | "ask">("all");
@@ -71,7 +71,6 @@ const OrderListPage = () => {
       </header>
 
       <main className="flex h-full justify-center p-6">{renderContent}</main>
-
     </div>
   );
 };

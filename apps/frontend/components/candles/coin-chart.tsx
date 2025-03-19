@@ -11,7 +11,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { useCoinChart } from "@/hooks/useCoinChart";
+import { useCoinChart } from "~/hooks/useCoinChart";
 
 ChartJS.register(
   LineElement,

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { Market } from "@/types/upbit";
-import { UPBIT_URL } from "@/constants/url";
+import { Market } from "~/types/upbit";
+import { UPBIT_URL } from "~/constants/url";
 
 export default async function MarketContent() {
   const res = await fetch(`${UPBIT_URL}/market/all`);

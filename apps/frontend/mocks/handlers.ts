@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { BASE_URL } from "@/constants/url";
+import { BASE_URL } from "~/constants/url";
 
 export const handlers = [
   http.get(`${BASE_URL}/api/trading/orders/closed`, () => {

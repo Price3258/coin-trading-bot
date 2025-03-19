@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 
-import OrderListContent from "@/components/order-list/order-list-content";
-import { ClosedOrder } from "@/types/order";
-import OrderListHeader from "@/components/order-list/order-list-header";
-import { BASE_URL } from "@/constants/url";
+import OrderListContent from "~/components/order-list/order-list-content";
+import { ClosedOrder } from "~/types/order";
+import OrderListHeader from "~/components/order-list/order-list-header";
+import { BASE_URL } from "~/constants/url";
 
 const OrderListPage = () => {
   const [orders, setOrders] = useState<ClosedOrder[]>([]);
@@ -53,12 +53,12 @@ const OrderListPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow-md py-4 px-6">
+      <header className="bg-white px-6 py-4 shadow-md">
         <h1 className="text-2xl font-bold text-gray-800">📜 주문 내역</h1>
       </header>
 
-      <main className="h-full flex justify-center p-6">
-        <div className="w-full max-w-5xl h-full bg-white shadow-lg rounded-lg p-6">
+      <main className="flex h-full justify-center p-6">
+        <div className="h-full w-full max-w-5xl rounded-lg bg-white p-6 shadow-lg">
           <OrderListHeader
             filter={filter}
             setFilter={setFilter}

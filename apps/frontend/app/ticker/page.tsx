@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchTicker } from "@/apis/upbit";
+import { fetchTicker } from "~/apis/upbit";
 
 const TickerPage = () => {
   const { data, isLoading, error } = useQuery({

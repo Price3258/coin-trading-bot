@@ -1,4 +1,4 @@
-import { ClosedOrder } from "@/types/order";
+import { ClosedOrder } from "~/types/order";
 import React from "react";
 
 type Props = {
@@ -8,20 +8,20 @@ type Props = {
 export default function OrderListContent({ orders }: Props) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border border-gray-300 rounded-lg shadow-md">
+      <table className="w-full rounded-lg border border-gray-300 shadow-md">
         <thead className="bg-gray-100">
           <tr className="text-gray-800">
-            <th className="p-3 border">거래 마켓</th>
-            <th className="p-3 border">주문 유형</th>
-            <th className="p-3 border">수량</th>
-            <th className="p-3 border">가격</th>
-            <th className="p-3 border">주문 시간</th>
+            <th className="border p-3">거래 마켓</th>
+            <th className="border p-3">주문 유형</th>
+            <th className="border p-3">수량</th>
+            <th className="border p-3">가격</th>
+            <th className="border p-3">주문 시간</th>
           </tr>
         </thead>
         <tbody>
           {orders.length === 0 ? (
             <tr>
-              <td colSpan={5} className="text-center p-4 text-gray-500">
+              <td colSpan={5} className="p-4 text-center text-gray-500">
                 ⏳ 주문 내역이 없습니다.
               </td>
             </tr>
@@ -29,7 +29,7 @@ export default function OrderListContent({ orders }: Props) {
             orders.map((order) => (
               <tr
                 key={order.uuid}
-                className="border-b hover:bg-gray-50 transition"
+                className="border-b transition hover:bg-gray-50"
               >
                 <td className="p-3 text-center text-gray-800">
                   {order.market}

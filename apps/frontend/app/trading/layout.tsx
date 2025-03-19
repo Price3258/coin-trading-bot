@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import AccountContent from "@/components/account/account-content";
+import AccountContent from "~/components/account/account-content";
 
 interface TradingLayoutProps {
   strategy: ReactNode;

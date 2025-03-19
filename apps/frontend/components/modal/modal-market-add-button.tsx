@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useAutoTradingStore } from "@/store/autoTradingStore";
+import { useAutoTradingStore } from "~/store/autoTradingStore";
 
 type Props = {
   marketId: string;

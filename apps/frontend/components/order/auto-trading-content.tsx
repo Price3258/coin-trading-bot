@@ -1,6 +1,6 @@
 "use client";
 
-import { useAutoTradingStore } from "@/store/autoTradingStore";
+import { useAutoTradingStore } from "~/store/autoTradingStore";
 import AutoTrading from "./auto-trading";
 
 export default function AutoTradingContent() {

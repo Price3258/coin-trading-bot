@@ -1,7 +1,7 @@
-import CoinChart from "@/components/candles/coin-chart";
-import ModalBackdrop from "@/components/modal/modal-backdrop";
-import ModalCloseButton from "@/components/modal/modal-close-button";
-import ModalMarketAddButton from "@/components/modal/modal-market-add-button";
+import CoinChart from "~/components/candles/coin-chart";
+import ModalBackdrop from "~/components/modal/modal-backdrop";
+import ModalCloseButton from "~/components/modal/modal-close-button";
+import ModalMarketAddButton from "~/components/modal/modal-market-add-button";
 
 export default async function MarketModal({
   params,

@@ -10,7 +10,7 @@ export const MSWComponent = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const initialize = async () => {
       if (isMockingEnabled) {
-        const { initMockAPI } = await import("@/mocks/index");
+        const { initMockAPI } = await import("~/mocks/index");
         await initMockAPI();
         setIsReady(true);
       }

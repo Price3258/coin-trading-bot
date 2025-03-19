@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/constants/url";
+import { BASE_URL } from "~/constants/url";
 import { useQuery } from "@tanstack/react-query";
 
 export const useCoinChart = (marketId: string) => {
