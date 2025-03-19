@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchStrategy } from "@/apis/trading";
+import { fetchStrategy } from "~/apis/trading";
 
 const StrategyContent = () => {
   const { data, isLoading, error } = useQuery({

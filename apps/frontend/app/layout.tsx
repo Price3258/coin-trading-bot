@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import ReactQueryProvider from "@/providers/react-query-provider";
-import Navigation from "@/components/layout/navigation";
 
 import "./globals.css";
-import { MSWComponent } from "@/components/msw-component";
+
+import ReactQueryProvider from "~/providers/react-query-provider";
+import Navigation from "~/components/layout/navigation";
+import { MSWComponent } from "~/components/msw-component";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

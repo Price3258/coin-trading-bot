@@ -1,4 +1,4 @@
-import { BASE_URL, UPBIT_URL } from "@/constants/url";
+import { BASE_URL, UPBIT_URL } from "~/constants/url";
 import axios from "axios";
 
 /*

@@ -1,5 +1,5 @@
-import MarketContent from "@/components/home/market-content";
-import AutoTradingContent from "@/components/order/auto-trading-content";
+import MarketContent from "~/components/home/market-content";
+import AutoTradingContent from "~/components/order/auto-trading-content";
 
 const HomePage = () => {
   return (

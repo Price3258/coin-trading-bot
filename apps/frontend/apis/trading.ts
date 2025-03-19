@@ -1,5 +1,5 @@
-import { TRADING_URL } from "@/constants/url";
-import { OrderRequest, OrderResponse } from "@/types/trading";
+import { TRADING_URL } from "~/constants/url";
+import { OrderRequest, OrderResponse } from "~/types/trading";
 
 export const fetchStrategy = async (market: string) => {
   const res = await fetch(`${TRADING_URL}/strategy/${market}`, {
@@ -15,7 +15,7 @@ export const fetchStrategy = async (market: string) => {
 };
 
 export const postPlaceOrder = async (
-  order: OrderRequest
+  order: OrderRequest,
 ): Promise<OrderResponse> => {
   const res = await fetch(`${TRADING_URL}/order`, {
     method: "POST",

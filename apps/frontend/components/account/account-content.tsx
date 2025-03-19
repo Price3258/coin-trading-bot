@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchAccount } from "@/apis/upbit";
-import { Account } from "@/types/upbit";
+import { fetchAccount } from "~/apis/upbit";
+import { Account } from "~/types/upbit";
 
 export default function AccountContent() {
   const {

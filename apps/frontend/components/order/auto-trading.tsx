@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useAutoTradingStore } from "@/store/autoTradingStore";
-import { BASE_URL } from "@/constants/url";
+import { useAutoTradingStore } from "~/store/autoTradingStore";
+import { BASE_URL } from "~/constants/url";
 
 const AutoTrading = ({ market }: { market: string }) => {
   const { autoTradingPairs, toggleAutoTrading, removeAutoTrading } =

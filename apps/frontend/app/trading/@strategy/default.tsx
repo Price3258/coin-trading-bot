@@ -1,4 +1,4 @@
-import StrategyContent from "@/components/strategy/strategy-content";
+import StrategyContent from "~/components/strategy/strategy-content";
 
 const StrategyPage = () => {
   return <StrategyContent />;
