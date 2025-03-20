@@ -42,8 +42,8 @@ const OrderPage = () => {
             value={side}
             onChange={(e) => setSide(e.target.value as "bid" | "ask")}
           >
-            <option value="bid">🟢 매수</option>
-            <option value="ask">🔴 매도</option>
+            <option value="bid">매수</option>
+            <option value="ask">매도</option>
           </select>
 
           <label className="font-medium text-gray-800">주문 유형:</label>
@@ -58,23 +58,21 @@ const OrderPage = () => {
             <option value="limit">지정가</option>
           </select>
 
-          {ordType !== "market" && (
-            <>
-              <label className="font-medium text-gray-800">수량:</label>
-              <input
-                className="rounded-lg border p-3 text-gray-800"
-                value={volume}
-                onChange={(e) => setVolume(e.target.value)}
-              />
+          <>
+            <label className="font-medium text-gray-800">수량:</label>
+            <input
+              className="rounded-lg border p-3 text-gray-800"
+              value={volume}
+              onChange={(e) => setVolume(e.target.value)}
+            />
 
-              <label className="font-medium text-gray-800">가격:</label>
-              <input
-                className="rounded-lg border p-3 text-gray-800"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </>
-          )}
+            <label className="font-medium text-gray-800">가격:</label>
+            <input
+              className="rounded-lg border p-3 text-gray-800"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </>
 
           <button
             onClick={handleOrder}
