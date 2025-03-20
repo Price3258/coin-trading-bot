@@ -185,17 +185,20 @@ router.get("/auto-trade", async (req, res, next) => {
 
     const currentPrice = parseFloat(ticker[0].trade_price);
 
-    //  3. 매도 조건
+    const minSellVolume = 5000 / currentPrice; // 최소 5천원어치 매도
+    const sellVolume =
+      currentBalance >= minSellVolume ? minSellVolume : currentBalance;
+
+    //  3. 매도 조건 보유량이 0.0001 이상일 경우 실행.
     const sellThreshold = avgBuyPrice * 1.03;
-    if (currentPrice >= sellThreshold && currentBalance > 0.0001) {
+    if (currentPrice >= sellThreshold && currentBalance > minSellVolume) {
       console.log(`매도 조건 충족: ${currentPrice} >= ${sellThreshold}`);
 
       const sellOrder = await upbitRequest("/orders", "POST", {
         market: market,
         side: "ask",
-        volume: (currentBalance * 0.5).toFixed(8), // 50% 매도
-        ord_type: "limit",
-        price: currentPrice,
+        volume: sellVolume.toFixed(8), // 50% 매도
+        ord_type: "market",
       });
 
       console.log("매도 주문 완료:", sellOrder);

@@ -37,7 +37,7 @@ export default function OrderListContent({ orders }: Props) {
                 <td
                   className={`p-3 text-center font-medium ${order.side === "bid" ? "text-green-500" : "text-red-500"}`}
                 >
-                  {order.side === "bid" ? "🟢 매수" : "🔴 매도"}
+                  {order.side === "bid" ? "매수" : "매도"}
                 </td>
                 <td className="p-3 text-center text-gray-800">
                   {order.executed_volume}

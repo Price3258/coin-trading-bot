@@ -16,13 +16,13 @@ test.describe("auto-trading", () => {
 
   test("자동매매 시작 및 중지", async ({ page }) => {
     const startButton = page
-      .getByRole("button", { name: "🟢 자동 매매 시작" })
+      .getByRole("button", { name: "자동 매매 시작" })
       .nth(0);
 
     await expect(startButton).toBeVisible();
     await startButton.click();
     const stopButton = page
-      .getByRole("button", { name: "🔴 자동 매매 중지" })
+      .getByRole("button", { name: "자동 매매 중지" })
       .nth(0);
 
     await expect(stopButton).toBeVisible();
@@ -33,7 +33,7 @@ test.describe("auto-trading", () => {
 
   test("새로고침 후 자동매매 유지 확인", async ({ page }) => {
     const btcToggleButton = page.getByRole("button", {
-      name: "🟢 자동 매매 시작",
+      name: "자동 매매 시작",
     });
 
     await expect(btcToggleButton).toBeVisible();
@@ -58,7 +58,7 @@ test.describe("auto-trading", () => {
     // console.log("Reload 후 localStorage 상태 확인:", afterReloadData);
 
     await expect(
-      page.getByRole("button", { name: "🔴 자동 매매 중지" }),
+      page.getByRole("button", { name: "자동 매매 중지" }),
     ).toBeVisible();
   });
 });
