@@ -33,7 +33,7 @@ const AutoTrading = ({ market }: { market: string }) => {
         🤖 {market} 자동 매매
       </h1>
 
-      {/* 📌 자동 매매 토글 버튼 */}
+      {/*  자동 매매 토글 버튼 */}
       <button
         className={`rounded-lg px-4 py-2 text-white ${
           isAutoTrading

@@ -55,7 +55,7 @@ test.describe("auto-trading", () => {
     //   window.localStorage.getItem("auto-trading-store"),
     // );
 
-    // console.log("✅ Reload 후 localStorage 상태 확인:", afterReloadData);
+    // console.log("Reload 후 localStorage 상태 확인:", afterReloadData);
 
     await expect(
       page.getByRole("button", { name: "🔴 자동 매매 중지" }),

@@ -92,7 +92,7 @@ const OrderPage = () => {
             <p className="mt-2 text-red-500">🚨 오류 발생: {error.message}</p>
           )}
           {data && (
-            <p className="mt-2 text-green-500">✅ 주문 완료! ID: {data.uuid}</p>
+            <p className="mt-2 text-green-500">주문 완료! ID: {data.uuid}</p>
           )}
         </div>
       </div>

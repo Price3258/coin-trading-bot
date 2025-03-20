@@ -13,7 +13,7 @@ export default function AccountContent() {
   } = useQuery<Account[]>({
     queryKey: ["account"],
     queryFn: fetchAccount,
-    refetchInterval: 10000, // ✅ 10초마다 최신 데이터 반영
+    refetchInterval: 10000, // 10초마다 최신 데이터 반영
   });
 
   if (isLoading) return <p>로딩 중...</p>;

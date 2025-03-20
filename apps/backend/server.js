@@ -20,13 +20,13 @@ app.use(
 
 // 기본 API 엔드포인트
 app.get("/", (req, res) => {
-  res.send("✅ 백엔드 서버 실행 중!");
+  res.send("백엔드 서버 실행 중!");
 });
 
 app.use("/api/upbit", upbitRoutes);
 app.use("/api/trading", tradingRoutes);
 
-// ✅ 404 및 에러 핸들러는 라우트 **등록 후 마지막에 배치**
+// 404 및 에러 핸들러는 라우트 **등록 후 마지막에 배치**
 app.use(notFoundHandler);
 app.use(errorHandler);
 
