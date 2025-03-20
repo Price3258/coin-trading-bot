@@ -28,7 +28,7 @@ router.get("/ticker/:market", async (req, res) => {
     const data = await upbitRequest("/ticker", "GET", { markets: market });
     if (!data || data.length === 0) {
       const error = new Error(`❌ ${market}는 존재하지 않는 시장입니다.`);
-      error.status = 404; // ✅ 커스텀 HTTP 상태 코드
+      error.status = 404; // 커스텀 HTTP 상태 코드
       throw error;
     }
     res.json(data[0]);
@@ -50,7 +50,7 @@ router.get("/market/all", async (req, res) => {
   }
 });
 
-// ✅ 업비트 캔들 데이터 프록시 API
+// 업비트 캔들 데이터 프록시 API
 router.get("/candles/:market", async (req, res) => {
   try {
     const { market } = req.params;

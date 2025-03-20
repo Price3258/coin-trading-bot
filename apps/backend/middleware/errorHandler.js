@@ -13,7 +13,7 @@ export const errorHandler = (err, req, res, next) => {
 
   const statusCode = err.response?.status || err.status || 500;
 
-  // ✅ 업비트 API 에러 메시지 처리
+  // 업비트 API 에러 메시지 처리
   const errorMessage =
     err.response?.data?.error?.message || // 업비트 API에서 제공하는 에러 메시지
     err.message || // 일반적인 에러 메시지

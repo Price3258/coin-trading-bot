@@ -30,6 +30,6 @@ export const useAutoTradingStore = create<AutoTradingStore>()(
         });
       },
     }),
-    { name: "auto-trading-store" }, // ✅ localStorage에 자동 저장
+    { name: "auto-trading-store" }, // localStorage에 자동 저장
   ),
 );

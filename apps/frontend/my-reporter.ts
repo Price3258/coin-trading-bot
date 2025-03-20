@@ -33,7 +33,7 @@ class MyReporter implements Reporter {
 
   onEnd(result: FullResult) {
     console.log(
-      `🎉 테스트 완료: ${result.status === "passed" ? "✅ 성공" : "❌ 실패"}`,
+      `🎉 테스트 완료: ${result.status === "passed" ? "성공" : "❌ 실패"}`,
     );
   }
 }

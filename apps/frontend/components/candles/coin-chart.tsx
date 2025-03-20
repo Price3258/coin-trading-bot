@@ -32,7 +32,7 @@ const CoinChart = ({ marketId }: CoinChartProps) => {
   if (isLoading) return <p>📊 차트 로딩 중...</p>;
   if (error) return <p>❌ 차트 데이터를 불러오지 못했습니다.</p>;
 
-  // ✅ 차트 데이터 변환
+  // 차트 데이터 변환
   const chartData = {
     labels: data.map((item: any) =>
       new Date(item.timestamp).toLocaleTimeString(),

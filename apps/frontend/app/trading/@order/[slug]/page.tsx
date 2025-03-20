@@ -13,7 +13,7 @@ const OrderListPage = () => {
   const [filter, setFilter] = useState<"all" | "bid" | "ask">("all");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  // ✅ 주문 내역 가져오기
+  // 주문 내역 가져오기
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -32,16 +32,16 @@ const OrderListPage = () => {
     fetchOrders();
   }, []);
 
-  // ✅ 필터링 및 정렬 적용
+  // 필터링 및 정렬 적용
   useEffect(() => {
     let updatedOrders = [...orders];
 
-    // 📌 필터 적용 (매수/매도/전체)
+    //  필터 적용 (매수/매도/전체)
     if (filter !== "all") {
       updatedOrders = updatedOrders.filter((order) => order.side === filter);
     }
 
-    // 📌 정렬 적용 (최신순 / 과거순)
+    //  정렬 적용 (최신순 / 과거순)
     updatedOrders.sort((a, b) => {
       const dateA = new Date(a.created_at).getTime();
       const dateB = new Date(b.created_at).getTime();
