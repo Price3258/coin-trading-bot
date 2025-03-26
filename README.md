@@ -55,3 +55,22 @@ npm run dev
 cd apps/backend
 npm run dev
 ```
+
+## 📅 진행 상황 요약
+
+- [x] 실시간 시세 조회 구현
+- [x] 수동 주문 기능
+- [x] 자동 전략 설정
+- [x] 주문 내역 페이지
+- [x] 인터셉트 라우트 기반 모달 구현
+- [ ] 사용자가 매매 기준(이익 실현 %, 손실 매수 %)을 직접 설정할 수 있도록 반영
+- [ ] WebSocket 을 활용하여 실시간 가격 변동 감지하도록 수정
+- [ ] 코인 검색 기능
+- [ ] 코인 모으기 기능
+
+---
+
+## 📌 참고
+
+- [Next.js 공식 문서](https://nextjs.org/docs)
+- [Upbit Open API](https://docs.upbit.com/)
