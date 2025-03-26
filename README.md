@@ -1,84 +1,57 @@
-# Turborepo starter
+# 트레이딩 봇
 
-This Turborepo starter is maintained by the Turborepo core team.
+## 프로젝트 개요
 
-## Using this example
+해당 프로젝트는 개인용으로, 업비트 API를 활용하여 개인 평균에 따라 매도-매수를 하는 시스템을 만들어보기 위함입니다. 또 Next.js를 공부하기 위함입니다.
+playwright, msw 를 이용해 e2e 를 구축했습니다.
+turbo repo를 이용해 하나의 프로젝트 안에서 관리할 수 있도록 했습니다.
 
-Run the following command:
+## 🛠️ 기술 스택
 
-```sh
-npx create-turbo@latest
+- **Frontend**: Next.js (App Router), React 19, TypeScript, Tailwind CSS
+
+  - **DB/State**: React Query, Zustand
+  - **Test**: playwright, msw
+
+- **Backend**: Express.js, Node.js
+  - **API**: Upbit Open API (시세/주문)
+
+---
+
+### 주요 디렉토리
+
+- **apps/backend**: 백엔드 애플리케이션 코드가 포함되어 있습니다. API 서버와 관련된 로직이 이곳에 위치합니다.
+- **apps/frontend**: 프론트엔드 애플리케이션 코드가 포함되어 있습니다. 사용자 인터페이스와 관련된 로직이 이곳에 위치합니다.
+- **packages/eslint-config**: 프로젝트 전반에서 사용되는 ESLint 설정이 포함되어 있습니다.
+- **packages/typescript-config**: TypeScript 설정이 포함되어 있습니다.
+- **packages/ui**: 재사용 가능한 UI 컴포넌트가 포함되어 있습니다.
+
+## 설치 및 실행
+
+### 1. 의존성 설치
+
+프로젝트 루트에서 다음 명령어를 실행하여 의존성을 설치합니다:
+
+```bash
+npm install
 ```
 
-## What's inside?
+### 2. 실행
 
-This Turborepo includes the following packages/apps:
+하나의 터미널에서
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+npm run dev
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
+혹은 2개의 터미널에서
 
 ```
-cd my-turborepo
-pnpm dev
+cd apps/frontend
+npm run dev
 ```
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
 ```
-cd my-turborepo
-npx turbo login
+cd apps/backend
+npm run dev
 ```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
