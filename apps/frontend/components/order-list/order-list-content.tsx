@@ -43,7 +43,10 @@ export default function OrderListContent({ orders }: Props) {
                   {order.executed_volume}
                 </td>
                 <td className="p-3 text-center text-gray-800">
-                  {parseFloat(order.price).toLocaleString()} 원
+                  {order.side === "bid"
+                    ? parseFloat(order.price).toLocaleString()
+                    : parseFloat(order.executed_funds).toLocaleString()}{" "}
+                  원
                 </td>
                 <td className="p-3 text-center text-gray-800">
                   {new Date(order.created_at).toLocaleString()}
