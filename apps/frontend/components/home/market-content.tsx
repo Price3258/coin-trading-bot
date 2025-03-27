@@ -1,7 +1,7 @@
-import Link from "next/link";
-
 import { Market } from "~/types/upbit";
 import { UPBIT_URL } from "~/constants/url";
+
+import MarketList from "./market-list";
 
 export default async function MarketContent() {
   const res = await fetch(`${UPBIT_URL}/market/all`);
@@ -17,23 +17,7 @@ export default async function MarketContent() {
         📈 거래 가능 마켓
       </h1>
 
-      <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-        {markets
-          ?.filter((market) => market.market.startsWith("KRW"))
-          .map((market) => (
-            <li key={market.market}>
-              <Link
-                href={`/market/${market.market}`}
-                className="block cursor-pointer rounded-lg bg-gray-100 p-4 shadow transition hover:bg-gray-200"
-              >
-                <p className="text-lg font-semibold text-gray-600">
-                  {market.korean_name}
-                </p>
-                <p className="text-sm text-gray-700">{market.market}</p>
-              </Link>
-            </li>
-          ))}
-      </ul>
+      <MarketList markets={markets} />
     </div>
   );
 }
