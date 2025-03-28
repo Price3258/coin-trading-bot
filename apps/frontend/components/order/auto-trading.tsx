@@ -1,6 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+
 import { useAutoTradingStore } from "~/store/autoTradingStore";
 import { BASE_URL } from "~/constants/url";
 
@@ -25,6 +27,16 @@ const AutoTrading = ({ market }: { market: string }) => {
     enabled: isAutoTrading, // 자동매매 활성화 상태일 때만 실행
     refetchInterval: isAutoTrading ? 10000 : false, //  10초마다 자동 실행
   });
+
+  useEffect(() => {
+    if (
+      isAutoTrading &&
+      data &&
+      (data.action === "buy" || data.action === "sell")
+    ) {
+      toggleAutoTrading(market, false);
+    }
+  }, [data, isAutoTrading, market, toggleAutoTrading]);
 
   const tradeResultText = (() => {
     if (data?.action === "sell") {
@@ -68,6 +80,13 @@ const AutoTrading = ({ market }: { market: string }) => {
       {isError && (
         <p className="text-red-600">{error?.message || "오류 발생"}</p>
       )}
+
+      {!isAutoTrading &&
+        data?.action !== "none" && ( // none 은 서버에서 주지 않지만 임의로 지정
+          <p className="mt-2 text-sm text-green-600">
+            매매가 완료되어 자동매매가 중지되었습니다.
+          </p>
+        )}
 
       {data && !isError && (
         <div className="mt-4 rounded-lg bg-gray-100 p-4">
