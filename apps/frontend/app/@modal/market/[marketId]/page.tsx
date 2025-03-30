@@ -1,7 +1,12 @@
-import CoinChart from "~/components/candles/coin-chart";
+import dynamic from "next/dynamic";
+
 import ModalBackdrop from "~/components/modal/modal-backdrop";
 import ModalCloseButton from "~/components/modal/modal-close-button";
 import ModalMarketAddButton from "~/components/modal/modal-market-add-button";
+
+const Chart = dynamic(() => import("~/components/candles/coin-chart"), {
+  loading: () => <p>Loading...</p>,
+});
 
 export default async function MarketModal({
   params,
@@ -22,7 +27,7 @@ export default async function MarketModal({
           해당 코인의 실시간 가격 변동을 확인하세요.
         </p>
         <div className="h-[400px] w-full">
-          <CoinChart marketId={marketId} />
+          {marketId ? <Chart marketId={marketId} /> : <p>데이터가 없습니다.</p>}
         </div>
         <ModalMarketAddButton marketId={marketId} />
       </div>
