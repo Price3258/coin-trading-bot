@@ -84,7 +84,7 @@ const AutoTrading = ({ market }: { market: string }) => {
       {!isAutoTrading &&
         data?.action !== "none" && ( // none 은 서버에서 주지 않지만 임의로 지정
           <p className="mt-2 text-sm text-green-600">
-            매매가 완료되어 자동매매가 중지되었습니다.
+            자동매매를 중단했습니다.
           </p>
         )}
 
