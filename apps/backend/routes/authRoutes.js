@@ -67,17 +67,4 @@ router.post("/logout", (req, res) => {
   res.json({ message: "로그아웃 완료" });
 });
 
-router.get("/me", async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ error: "로그인 필요" });
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select("-password");
-    res.json({ user });
-  } catch (err) {
-    res.status(401).json({ error: "유효하지 않은 토큰" });
-  }
-});
-
 export default router;

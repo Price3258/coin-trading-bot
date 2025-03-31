@@ -1,28 +1,15 @@
 import { create } from "zustand";
 
-interface AuthStore {
-  token: string | null;
+interface AuthState {
   isLoggedIn: boolean;
-  setToken: (token: string) => void;
-  clearToken: () => void;
-  hydrateFromStorage: () => void;
+  user: { email: string; name: string } | null;
+  setUser: (user: AuthState["user"]) => void;
+  clear: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  token: null,
+export const useAuthStore = create<AuthState>((set) => ({
   isLoggedIn: false,
-  setToken: (token) => {
-    localStorage.setItem("token", token);
-    set({ token, isLoggedIn: true });
-  },
-  clearToken: () => {
-    localStorage.removeItem("token");
-    set({ token: null, isLoggedIn: false });
-  },
-  hydrateFromStorage: () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      set({ token, isLoggedIn: true });
-    }
-  },
+  user: null,
+  setUser: (user) => set({ isLoggedIn: true, user }),
+  clear: () => set({ isLoggedIn: false, user: null }),
 }));
