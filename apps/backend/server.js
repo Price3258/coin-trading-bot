@@ -13,6 +13,7 @@ dotenv.config(); // 환경 변수 로드
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:3000", // 프론트엔드 도메인만 허용
