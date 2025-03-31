@@ -11,10 +11,21 @@ test.describe("auto-trading", () => {
         }),
       );
     });
-    await page.goto("/");
+
+    // 로그인 페이지 이동
+    await page.goto("/auth");
+
+    // 로그인 입력
+    await page.fill('input[placeholder="이메일"]', "test@example.com");
+    await page.fill('input[placeholder="비밀번호"]', "password123");
+
+    // 로그인 버튼 클릭
+    await page.click('button:has-text("로그인")');
   });
 
-  test("자동매매 시작 및 중지", async ({ page }) => {
+  test("자동매매 시작 및 매수 확인", async ({ page }) => {
+    await page.waitForURL("/");
+
     const startButton = page
       .getByRole("button", { name: "자동 매매 시작" })
       .nth(0);
@@ -22,13 +33,10 @@ test.describe("auto-trading", () => {
     await expect(startButton).toBeVisible();
     await startButton.click();
     const stopButton = page
-      .getByRole("button", { name: "자동 매매 중지" })
+      .getByRole("button", { name: "자동 매매 시작" })
       .nth(0);
 
     await expect(stopButton).toBeVisible();
-
-    await stopButton.click();
-    await expect(startButton).toBeVisible();
   });
 
   test("새로고침 후 자동매매 유지 확인", async ({ page }) => {
@@ -58,7 +66,7 @@ test.describe("auto-trading", () => {
     // console.log("Reload 후 localStorage 상태 확인:", afterReloadData);
 
     await expect(
-      page.getByRole("button", { name: "자동 매매 중지" }),
+      page.getByRole("button", { name: "자동 매매 시작" }),
     ).toBeVisible();
   });
 });

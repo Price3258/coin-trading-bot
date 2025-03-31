@@ -13,9 +13,7 @@ export default async function MarketContent() {
 
   return (
     <div className="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-4 text-2xl font-bold text-gray-800">
-        📈 거래 가능 마켓
-      </h1>
+      <h1 className="mb-4 text-2xl font-bold text-gray-800">거래 가능 마켓</h1>
 
       <MarketList markets={markets} />
     </div>
