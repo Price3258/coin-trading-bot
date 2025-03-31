@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import upbitRoutes from "./routes/upbitRoutes.js";
 import tradingRoutes from "./routes/tradingRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { MONGO_URI } from "./constants/url.js";
 
 dotenv.config(); // 환경 변수 로드
@@ -32,6 +33,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/upbit", upbitRoutes);
 app.use("/api/trading", tradingRoutes);
+
+app.use("/api/auth", authRoutes);
 
 // 404 및 에러 핸들러는 라우트 **등록 후 마지막에 배치**
 app.use(notFoundHandler);
