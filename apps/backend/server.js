@@ -1,10 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import upbitRoutes from "./routes/upbitRoutes.js";
 import tradingRoutes from "./routes/tradingRoutes.js";
+import { MONGO_URI } from "./constants/url.js";
 
 dotenv.config(); // 환경 변수 로드
 
@@ -17,6 +19,11 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB 연결됨"))
+  .catch((err) => console.error("❌ MongoDB 연결 실패", err));
 
 // 기본 API 엔드포인트
 app.get("/", (req, res) => {
