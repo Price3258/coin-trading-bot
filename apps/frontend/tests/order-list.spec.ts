@@ -1,6 +1,21 @@
 import { test, expect } from "./utils/extendedTest";
 
 test.describe("주문 내역 테스트", () => {
+  test.beforeEach(async ({ page }) => {
+    // 로그인 페이지 이동
+    await page.goto("/auth");
+
+    // 로그인 입력
+    await page.fill('input[placeholder="이메일"]', "test@example.com");
+    await page.fill('input[placeholder="비밀번호"]', "password123");
+
+    // 로그인 버튼 클릭
+    await page.click('button:has-text("로그인")');
+
+    const welcomeMessage = await page.textContent("h1");
+    expect(welcomeMessage).toContain("거래 가능 마켓");
+  });
+
   test("order-list", async ({ page }) => {
     // 페이지 이동
     await page.goto("/order-list");

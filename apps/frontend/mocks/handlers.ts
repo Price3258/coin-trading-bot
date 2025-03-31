@@ -30,4 +30,25 @@ export const handlers = [
       status: "매수 주문 실행됨",
     });
   }),
+  http.post(`${BASE_URL}/api/auth/login`, async ({ request }) => {
+    const body = (await request.json()) as { email: string; password: string };
+    const { email, password } = body;
+
+    if (email === "test@example.com" && password === "password123") {
+      return HttpResponse.json({
+        user: { email, name: "테스트 유저" },
+      });
+    }
+
+    return new HttpResponse(
+      JSON.stringify({ error: "로그인 실패: 잘못된 자격 증명입니다." }),
+      { status: 401 },
+    );
+  }),
+  // 로그인 상태 확인용 /api/user/me
+  http.get(`${BASE_URL}/api/user/me`, () => {
+    return HttpResponse.json({
+      user: { email: "test@example.com", name: "테스트 유저" },
+    });
+  }),
 ];
