@@ -51,7 +51,9 @@ export default function MarketList({ markets }: Props) {
         {filteredMarkets.map((market) => (
           <li key={market.market}>
             <Link
-              href={`/market/${market.market}`}
+              href={{
+                pathname: `/market/${market.market}`,
+              }}
               className="block cursor-pointer rounded-lg bg-gray-100 p-4 shadow transition hover:bg-gray-200"
             >
               <p className="text-lg font-semibold text-gray-600">
