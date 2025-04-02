@@ -31,6 +31,11 @@ export default function Navigation() {
               시세 조회
             </Link>
           </li>
+          <li>
+            <Link href="/gathering" className="hover:text-gray-300">
+              모으기
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
