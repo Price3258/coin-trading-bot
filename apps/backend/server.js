@@ -4,14 +4,16 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 
+dotenv.config(); // 환경 변수 로드
+
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import upbitRoutes from "./routes/upbitRoutes.js";
 import tradingRoutes from "./routes/tradingRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import { MONGO_URI } from "./constants/url.js";
+import gatheringRoutes from "./routes/gathering.js";
 
-dotenv.config(); // 환경 변수 로드
+import { MONGO_URI } from "./constants/url.js";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +39,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/upbit", upbitRoutes);
 app.use("/api/trading", tradingRoutes);
+app.use("/api/gathering", gatheringRoutes);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
