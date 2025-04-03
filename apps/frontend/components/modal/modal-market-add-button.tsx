@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { BASE_URL } from "~/constants/url";
 
 import { useAutoTradingStore } from "~/store/autoTradingStore";
-import { useMarketStore } from "~/store/marketStore";
 
 type Props = {
   marketId: string;
@@ -11,7 +11,6 @@ type Props = {
 
 export default function ModalMarketAddButton({ marketId }: Props) {
   const { toggleAutoTrading } = useAutoTradingStore();
-  const { toggleGathering } = useMarketStore();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -23,9 +22,26 @@ export default function ModalMarketAddButton({ marketId }: Props) {
     router.back();
   };
 
-  const onToggleAddGatheringHandler = () => {
-    toggleGathering(marketId, false);
-    router.back();
+  const onToggleAddGatheringHandler = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/gathering`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ market: marketId, start: true }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "모으기 실패");
+      }
+
+      router.back();
+    } catch (error) {
+      console.error("모으기 실패:", error);
+    }
   };
 
   return (
@@ -37,7 +53,7 @@ export default function ModalMarketAddButton({ marketId }: Props) {
           : onToggleAddGatheringHandler
       }
     >
-      ➕ 자동 매매 추가
+      {isPathNameHome ? " 자동 매매 추가" : "코인 모으기"}
     </button>
   );
 }
