@@ -5,8 +5,21 @@ import {
   calculateMovingAverage,
   calculateRSI,
 } from "../utils/technicalIndicators.js";
+import { decrypt } from "../utils/encrypt.js";
+import User from "../models/user.js";
+import { authenticateJWT } from "../middleware/auth.js";
 
 const router = express.Router();
+
+router.use(authenticateJWT);
+
+const getUserKeys = async (userId) => {
+  const user = await User.findById(userId);
+  return {
+    accessKey: decrypt(user.upbitAccessKey),
+    secretKey: decrypt(user.upbitSecretKey),
+  };
+};
 
 /**
  * 자동 거래 전략 (RSI + 이동평균) 실행 API
@@ -17,13 +30,17 @@ router.get("/strategy/:market", async (req, res, next) => {
     const { market } = req.params;
     console.log("market");
 
-    /** 업비트 캔들 데이터 가져오기 (최근 100개)
-     * docs: https://docs.upbit.com/reference/%EB%B6%84minute-%EC%BA%94%EB%93%A4-1
-     */
-    const candles = await upbitRequest("/candles/minutes/5", "GET", {
-      market,
-      count: 100,
-    });
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
+    const candles = await upbitRequest(
+      "/candles/minutes/5",
+      "GET",
+      {
+        market,
+        count: 100,
+      },
+      accessKey,
+      secretKey
+    );
 
     // 가격 데이터 추출
     const prices = candles.map((candle) => candle.trade_price);
@@ -82,6 +99,7 @@ router.post("/order", async (req, res, next) => {
       return res.status(400).json({ error: "필수 파라미터가 없습니다." });
     }
 
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
     let orderParams = { market, side, ord_type };
 
     if (ord_type === "limit") {
@@ -120,7 +138,13 @@ router.post("/order", async (req, res, next) => {
       return res.status(400).json({ error: "올바르지 않은 ord_type입니다." });
     }
 
-    const response = await upbitRequest("/orders", "POST", orderParams);
+    const response = await upbitRequest(
+      "/orders",
+      "POST",
+      orderParams,
+      accessKey,
+      secretKey
+    );
     res.json(response);
   } catch (error) {
     next(error);
@@ -133,7 +157,16 @@ router.post("/order", async (req, res, next) => {
  */
 router.get("/orders/closed", async (req, res, next) => {
   try {
-    const response = await upbitRequest("/orders/closed", "GET");
+    console.log("test");
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
+
+    const response = await upbitRequest(
+      "/orders/closed",
+      "GET",
+      {},
+      accessKey,
+      secretKey
+    );
     res.json(response);
   } catch (error) {
     next(error);
@@ -150,19 +183,32 @@ router.get("/auto-trade", async (req, res, next) => {
     const currency = market.split("-")[1]; // BTC, ETH 등 추출
 
     //  1. 계좌 정보 조회
-    const accounts = await upbitRequest("/accounts", "GET");
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
+    const accounts = await upbitRequest(
+      "/accounts",
+      "GET",
+      {},
+      accessKey,
+      secretKey
+    );
 
     const account = accounts.find((acc) => acc.currency === currency);
 
     if (!account) {
       console.warn(`⚠️ ${currency} 보유 내역 없음 → 최초 매수 실행`);
 
-      const firstBuyOrder = await upbitRequest("/orders", "POST", {
-        market: market,
-        side: "bid",
-        price: "5000", // 5천원 어치 자동 매수
-        ord_type: "price",
-      });
+      const firstBuyOrder = await upbitRequest(
+        "/orders",
+        "POST",
+        {
+          market: market,
+          side: "bid",
+          price: "5000", // 5천원 어치 자동 매수
+          ord_type: "price",
+        },
+        accessKey,
+        secretKey
+      );
 
       return res.json({
         market,
@@ -176,7 +222,13 @@ router.get("/auto-trade", async (req, res, next) => {
     const currentBalance = parseFloat(account.balance);
 
     //  2. 현재 시세 조회
-    const ticker = await upbitRequest("/ticker", "GET", { markets: market });
+    const ticker = await upbitRequest(
+      "/ticker",
+      "GET",
+      { markets: market },
+      accessKey,
+      secretKey
+    );
 
     if (!ticker || ticker.length === 0) {
       console.error("❌ 시세 조회 실패");
@@ -194,12 +246,18 @@ router.get("/auto-trade", async (req, res, next) => {
     if (currentPrice >= sellThreshold && currentBalance > minSellVolume) {
       console.log(`매도 조건 충족: ${currentPrice} >= ${sellThreshold}`);
 
-      const sellOrder = await upbitRequest("/orders", "POST", {
-        market: market,
-        side: "ask",
-        volume: sellVolume.toFixed(8), // 50% 매도
-        ord_type: "market",
-      });
+      const sellOrder = await upbitRequest(
+        "/orders",
+        "POST",
+        {
+          market: market,
+          side: "ask",
+          volume: sellVolume.toFixed(8), // 50% 매도
+          ord_type: "market",
+        },
+        accessKey,
+        secretKey
+      );
 
       console.log("매도 주문 완료:", sellOrder);
 
@@ -218,12 +276,18 @@ router.get("/auto-trade", async (req, res, next) => {
     if (currentPrice <= buyThreshold) {
       console.log(`매수 조건 충족: ${currentPrice} <= ${buyThreshold}`);
 
-      const buyOrder = await upbitRequest("/orders", "POST", {
-        market: market,
-        side: "bid",
-        price: "5000",
-        ord_type: "price",
-      });
+      const buyOrder = await upbitRequest(
+        "/orders",
+        "POST",
+        {
+          market: market,
+          side: "bid",
+          price: "5000",
+          ord_type: "price",
+        },
+        accessKey,
+        secretKey
+      );
 
       console.log("매수 주문 완료:", buyOrder);
 

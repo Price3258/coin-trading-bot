@@ -50,6 +50,11 @@ const NavigationContent = () => {
                 모으기
               </Link>
             </li>
+            <li>
+              <Link href="/settings" className="hover:text-gray-300">
+                설정
+              </Link>
+            </li>
           </ul>
           <button
             onClick={handleLogout}

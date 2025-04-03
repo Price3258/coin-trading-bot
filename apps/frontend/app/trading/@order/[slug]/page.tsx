@@ -19,6 +19,7 @@ const OrderListPage = () => {
       try {
         const res = await fetch(`${BASE_URL}/api/trading/orders/closed`, {
           cache: "no-store",
+          credentials: "include",
         });
         if (!res.ok) throw new Error("주문 내역을 불러오는데 실패했습니다.");
         const data: ClosedOrder[] = await res.json();
