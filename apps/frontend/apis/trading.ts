@@ -4,6 +4,7 @@ import { OrderRequest, OrderResponse } from "~/types/trading";
 export const fetchStrategy = async (market: string) => {
   const res = await fetch(`${TRADING_URL}/strategy/${market}`, {
     cache: "no-store",
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -21,6 +22,7 @@ export const postPlaceOrder = async (
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(order),
+    credentials: "include",
   });
 
   if (!res.ok) {

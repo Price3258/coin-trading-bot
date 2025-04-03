@@ -5,7 +5,9 @@ export const useCoinChart = (marketId: string) => {
   return useQuery({
     queryKey: ["coinChart", marketId],
     queryFn: async () => {
-      const res = await fetch(`${BASE_URL}/api/upbit/candles/${marketId}`);
+      const res = await fetch(`${BASE_URL}/api/upbit/candles/${marketId}`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Failed to fetch chart data");
       }

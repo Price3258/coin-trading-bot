@@ -7,6 +7,7 @@ import axios from "axios";
 export const fetchAccount = async () => {
   const res = await fetch(`${UPBIT_URL}/accounts`, {
     cache: "no-store", // 최신 데이터 유지
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -41,6 +42,7 @@ export const fetchMarketList = async () => {
 export const fetchOrders = async () => {
   const res = await fetch(`${BASE_URL}/api/trading/orders/closed`, {
     cache: "no-store",
+    credentials: "include",
   });
   if (!res.ok) throw new Error("주문 내역을 불러오는데 실패했습니다.");
   return res.json();
