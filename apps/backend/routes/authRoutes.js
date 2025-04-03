@@ -45,6 +45,14 @@ router.post("/login", async (req, res) => {
       expiresIn: "7d",
     });
 
+    // httpOnly 쿠기로 저장
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+    });
+
     res.json({
       token,
       user: { id: user._id, email: user.email, name: user.name },
@@ -52,6 +60,11 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "서버 오류" });
   }
+});
+
+router.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "로그아웃 완료" });
 });
 
 export default router;

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import NavigationContent from "./navigation-content";
+
 export default function Navigation() {
   return (
     <nav className="bg-gray-800 p-4 text-white shadow-lg">
@@ -8,35 +10,7 @@ export default function Navigation() {
         <Link href="/" className="text-2xl font-bold">
           CoinBot 🚀
         </Link>
-
-        {/* 네비게이션 링크 */}
-        <ul className="flex space-x-6">
-          <li>
-            <Link href="/" className="hover:text-gray-300">
-              홈
-            </Link>
-          </li>
-          <li>
-            <Link href="/order-list" className="hover:text-gray-300">
-              주문 내역
-            </Link>
-          </li>
-          <li>
-            <Link href="/trading" className="hover:text-gray-300">
-              자동 거래 전략
-            </Link>
-          </li>
-          <li>
-            <Link href="/ticker" className="hover:text-gray-300">
-              시세 조회
-            </Link>
-          </li>
-          <li>
-            <Link href="/gathering" className="hover:text-gray-300">
-              모으기
-            </Link>
-          </li>
-        </ul>
+        <NavigationContent />
       </div>
     </nav>
   );

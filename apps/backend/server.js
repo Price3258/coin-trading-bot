@@ -2,22 +2,26 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import upbitRoutes from "./routes/upbitRoutes.js";
 import tradingRoutes from "./routes/tradingRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import { MONGO_URI } from "./constants/url.js";
 
 dotenv.config(); // 환경 변수 로드
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:3000", // 프론트엔드 도메인만 허용
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
@@ -35,6 +39,7 @@ app.use("/api/upbit", upbitRoutes);
 app.use("/api/trading", tradingRoutes);
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 // 404 및 에러 핸들러는 라우트 **등록 후 마지막에 배치**
 app.use(notFoundHandler);
