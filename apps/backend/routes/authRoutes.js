@@ -7,7 +7,7 @@ import User from "../models/user.js";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, upbitAccessKey, upbitSecretKey } = req.body;
   try {
     const existingUser = await User.findOne({ email });
 
@@ -16,7 +16,16 @@ router.post("/signup", async (req, res) => {
     }
 
     const hashed = await hash(password, 10);
-    const user = await User.create({ email, password: hashed, name });
+    const upbitAccessKeyEncrypted = encrypt(upbitAccessKey);
+    const upbitSecretKeyEncrypted = encrypt(upbitSecretKey);
+
+    const user = await User.create({
+      email,
+      password: hashed,
+      name,
+      upbitAccessKey: upbitAccessKeyEncrypted,
+      upbitSecretKey: upbitSecretKeyEncrypted,
+    });
 
     res.status(201).json({
       message: "회원가입 완료",

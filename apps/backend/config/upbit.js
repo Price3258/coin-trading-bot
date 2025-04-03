@@ -1,20 +1,15 @@
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-const UPBIT_ACCESS_KEY = process.env.UPBIT_ACCESS_KEY;
-const UPBIT_SECRET_KEY = process.env.UPBIT_SECRET_KEY;
 const UPBIT_SERVER_URL = "https://api.upbit.com/v1";
 
 /**
- * 업비트 API 요청을 위한 JWT 토큰 생성 함수
+ * 업비트 API 요청을 위한 JWT 생성
  */
-const generateUpbitJWT = (query = "") => {
+const generateUpbitJWT = (accessKey, secretKey, query = "") => {
   const payload = {
-    access_key: UPBIT_ACCESS_KEY,
+    access_key: accessKey,
     nonce: crypto.randomUUID(),
   };
 
@@ -25,20 +20,27 @@ const generateUpbitJWT = (query = "") => {
     payload.query_hash_alg = "SHA512";
   }
 
-  return jwt.sign(payload, UPBIT_SECRET_KEY);
+  return jwt.sign(payload, secretKey);
 };
 
 /**
- * 업비트 API 호출 함수
- * @param {string} endpoint endpoint
- * @param {string} method HTTP METHOD
- * @param {Object} params query params
- * @returns {number[]} 이동평균 값 배열
+ * 유저별 업비트 API 요청 함수
+ * @param {string} endpoint - API endpoint (ex. /orders)
+ * @param {string} method - HTTP method
+ * @param {Object} params - query parameters
+ * @param {string} accessKey - 유저의 access key
+ * @param {string} secretKey - 유저의 secret key
  */
-export const upbitRequest = async (endpoint, method = "GET", params = {}) => {
+export const upbitRequest = async (
+  endpoint,
+  method = "GET",
+  params = {},
+  accessKey,
+  secretKey
+) => {
   try {
     const queryString = new URLSearchParams(params).toString();
-    const jwtToken = generateUpbitJWT(queryString);
+    const jwtToken = generateUpbitJWT(accessKey, secretKey, queryString);
 
     const options = {
       method,

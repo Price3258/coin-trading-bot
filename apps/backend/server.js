@@ -12,6 +12,7 @@ import tradingRoutes from "./routes/tradingRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import gatheringRoutes from "./routes/gathering.js";
+import settingsRoutes from "./routes/settingsRoutes.js";
 
 import { MONGO_URI } from "./constants/url.js";
 
@@ -43,6 +44,7 @@ app.use("/api/gathering", gatheringRoutes);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/settings", settingsRoutes);
 
 // 404 및 에러 핸들러는 라우트 **등록 후 마지막에 배치**
 app.use(notFoundHandler);

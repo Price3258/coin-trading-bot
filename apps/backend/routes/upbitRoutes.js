@@ -1,17 +1,37 @@
 import express from "express";
 import axios from "axios";
+import { decrypt } from "../utils/encrypt.js";
+import User from "../models/user.js";
+import { authenticateJWT } from "../middleware/auth.js";
 
 import { upbitRequest } from "../config/upbit.js";
 import { UPBIT_CANDLE_API } from "../constants/url.js";
 
 const router = express.Router();
 
+router.use(authenticateJWT);
+
+const getUserKeys = async (userId) => {
+  const user = await User.findById(userId);
+  return {
+    accessKey: decrypt(user.upbitAccessKey),
+    secretKey: decrypt(user.upbitSecretKey),
+  };
+};
+
 /**
  * 내 계좌 정보 조회
  */
 router.get("/accounts", async (req, res) => {
   try {
-    const data = await upbitRequest("/accounts", "GET");
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
+    const data = await upbitRequest(
+      "/accounts",
+      "GET",
+      {},
+      accessKey,
+      secretKey
+    );
     console.log("/acounts");
     res.json(data);
   } catch (error) {
@@ -25,7 +45,14 @@ router.get("/accounts", async (req, res) => {
 router.get("/ticker/:market", async (req, res) => {
   try {
     const { market } = req.params;
-    const data = await upbitRequest("/ticker", "GET", { markets: market });
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
+    const data = await upbitRequest(
+      "/ticker",
+      "GET",
+      { markets: market },
+      accessKey,
+      secretKey
+    );
     if (!data || data.length === 0) {
       const error = new Error(`❌ ${market}는 존재하지 않는 시장입니다.`);
       error.status = 404; // 커스텀 HTTP 상태 코드
@@ -43,7 +70,14 @@ router.get("/ticker/:market", async (req, res) => {
  */
 router.get("/market/all", async (req, res) => {
   try {
-    const data = await upbitRequest("/market/all", "GET");
+    const { accessKey, secretKey } = await getUserKeys(req.user.id);
+    const data = await upbitRequest(
+      "/market/all",
+      "GET",
+      {},
+      accessKey,
+      secretKey
+    );
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: "거래 가능한 코인 목록 조회 실패" });
