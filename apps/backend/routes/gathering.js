@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
 
 // 특정 코인 모으기 중지
 router.delete("/:market", async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
   const { market } = req.params;
 
   try {
