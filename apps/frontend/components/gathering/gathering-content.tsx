@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "~/constants/url";
 import { Gathering } from "~/types/gathering";
+import GatheringItem from "./gathering-item";
 
 export default function GatheringContent() {
   const {
@@ -29,7 +30,9 @@ export default function GatheringContent() {
       {error && <p className="text-red-500">⚠️ 에러: {error.message}</p>}
 
       <ul className="mt-4 list-disc pl-5 text-gray-700">
-        {gatheringList?.map((item) => <li key={item.market}>{item.market}</li>)}
+        {gatheringList?.map((item) => (
+          <GatheringItem key={item.market} item={item} />
+        ))}
       </ul>
     </div>
   );
