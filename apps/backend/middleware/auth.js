@@ -8,6 +8,7 @@ export const authenticateJWT = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded);
     req.user = decoded; // 유저 정보 저장
     next();
   } catch (err) {

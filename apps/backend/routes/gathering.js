@@ -10,8 +10,9 @@ router.use(authenticateJWT);
 
 // 현재 유저의 모으는 코인 목록 조회
 router.get("/", async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
   try {
+    console.log(userId);
     const coins = await Gathering.find({ user: userId });
     res.json(coins);
   } catch (err) {
@@ -21,7 +22,7 @@ router.get("/", async (req, res) => {
 
 // 코인 모으기 시작 또는 업데이트
 router.post("/", async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
   const { market, start } = req.body;
 
   if (!market || typeof start !== "boolean") {
