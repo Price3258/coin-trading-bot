@@ -11,7 +11,7 @@ import upbitRoutes from "./routes/upbitRoutes.js";
 import tradingRoutes from "./routes/tradingRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import gatheringRoutes from "./routes/gathering.js";
+import gatheringRoutes from "./routes/gatheringRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 
 import { MONGO_URI } from "./constants/url.js";
