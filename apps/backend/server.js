@@ -15,6 +15,7 @@ import gatheringRoutes from "./routes/gatheringRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
 
 import { MONGO_URI } from "./constants/url.js";
+import { runGatheringJob } from "./jobs/gatheringJob.js";
 
 const app = express();
 app.use(express.json());
@@ -54,4 +55,6 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 백엔드 서버 실행 중: http://localhost:${PORT}`);
+
+  setInterval(runGatheringJob, 1000 * 60 * 60); // 이후 60분마다 실행
 });
