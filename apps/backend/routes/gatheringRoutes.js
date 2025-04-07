@@ -12,7 +12,6 @@ router.use(authenticateJWT);
 router.get("/", async (req, res) => {
   const userId = req.user.id;
   try {
-    console.log(userId);
     const coins = await Gathering.find({ user: userId });
     res.json(coins);
   } catch (err) {
